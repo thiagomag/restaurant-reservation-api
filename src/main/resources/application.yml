@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: restaurant-reservation-api
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME:postgres}
+    password: ${DATABASE_PASSWORD:postgres}
+
+    jpa:
+      show-sql: true
+      hibernate:
+        ddl-auto: update
+
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL95Dialect
+    dbcp2:
+      test-while-idle: true
+      validation-query: SELECT 1
+      driver-class-name: org.postgresql.Driver
