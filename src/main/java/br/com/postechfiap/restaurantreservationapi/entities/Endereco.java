@@ -1,5 +1,6 @@
 package br.com.postechfiap.restaurantreservationapi.entities;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,13 +22,14 @@ import lombok.ToString;
 @ToString
 @Builder(toBuilder = true)
 @Table(name = Restaurante.TABLE_NAME)
+@Entity
 public class Endereco extends BaseEntity<Long> {
 
     public static final String TABLE_NAME = "endereco";
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator", sequenceName = "endereco_id_seq", initialValue = 1, allocationSize = 1)
+    @SequenceGenerator(name = "sequenceGenerator", sequenceName = "endereco_id_seq", allocationSize = 1)
     private Long id;
     private String logradouro;
     private String numero;
