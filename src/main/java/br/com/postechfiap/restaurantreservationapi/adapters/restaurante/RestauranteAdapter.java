@@ -1,4 +1,4 @@
-package br.com.postechfiap.restaurantreservationapi.adapters.restaurate;
+package br.com.postechfiap.restaurantreservationapi.adapters.restaurante;
 
 import br.com.postechfiap.restaurantreservationapi.adapters.AbstractAdapter;
 import br.com.postechfiap.restaurantreservationapi.dto.restaurante.RestauranteRequest;
