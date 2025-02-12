@@ -39,5 +39,4 @@ public class Endereco extends BaseEntity<Long> {
     private String estado;
     private String cep;
 
-
 }
