@@ -21,6 +21,7 @@ public class ReservaRequest {
 
     private Long usuarioId;
     private Long restauranteId; // ID do restaurante
-    private LocalDateTime dataHoraReserva; // Data e hora da reserva
+    private LocalDateTime dataHoraReserva;
+    private int numeroDePessoas;
 
 }

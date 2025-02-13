@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,15 +27,15 @@ public class Reserva extends BaseEntity<Long> {
     private Usuario usuario;
 
     @ManyToOne
-    @JoinColumn(name = "mesa_id", nullable = false)
-    private Mesa mesa;
-
-    @ManyToOne
     @JoinColumn(name = "restaurante_id", nullable = false)
     private Restaurante restaurante;
 
+    @OneToMany
+    @JoinColumn(name = "reserva_id")
+    private List<Mesa> mesas;  // Agora é uma lista de mesas
+
     private LocalDateTime dataHoraReserva;
 
-
-
-     }
+    // Quantidade de pessoas para a reserva
+    private int numeroDePessoas;
+}
