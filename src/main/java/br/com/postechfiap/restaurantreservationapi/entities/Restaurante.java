@@ -1,14 +1,7 @@
 package br.com.postechfiap.restaurantreservationapi.entities;
 
 import br.com.postechfiap.restaurantreservationapi.enuns.TiposCozinhaEnum;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -38,6 +31,7 @@ public class Restaurante extends BaseEntity<Long> {
     @OneToOne
     @JoinColumn(name = "endereco_id")
     private Endereco endereco;
+    @Enumerated(EnumType.STRING)
     private TiposCozinhaEnum tipoCozinha;
     private String horarioFuncionamento;
     private String capacidade;

@@ -37,7 +37,7 @@ public class RestauranteRequest {
     private EnderecoRequest endereco;
 
     @NotNull(message = "O tipo de cozinha é obrigatório")
-    @Schema(description = "Tipo de cozinha do restaurante", example = "Italiana", required = true)
+    @Schema(description = "Tipo de cozinha do restaurante", example = "ITALIANA", required = true)
     private TiposCozinhaEnum tipoCozinha;
 
     @Size(max = 100, message = "O horário de funcionamento deve ter no máximo 100 caracteres")

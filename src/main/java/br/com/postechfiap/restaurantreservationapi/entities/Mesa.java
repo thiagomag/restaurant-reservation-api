@@ -12,7 +12,7 @@ import lombok.*;
 @Builder(toBuilder = true)
 @Table(name = Mesa.TABLE_NAME)
 @Entity
-public class Mesa extends BaseEntity<Long> {
+public class Mesa extends BaseEntity<String> {
 
     public static final String TABLE_NAME = "mesa";
 
@@ -20,10 +20,13 @@ public class Mesa extends BaseEntity<Long> {
     @Column(name = "id", nullable = false)
     private String id;
 
-    @Column(name = "restaurante_id", nullable = false)
-    private Long restauranteId;
+    @ManyToOne
+    @JoinColumn(name = "restaurante_id", nullable = false)
+    private Restaurante restaurante;  // Relacionamento com a entidade Restaurante
 
     private Integer numeroMesa;
-    private Integer capacidade = 2; //Aqui a mesa irá sempre acomodar 2 Pessoas
+
+    @Builder.Default
+    private Integer capacidade = 2; // Aqui a mesa irá sempre acomodar 2 Pessoas
 }
 

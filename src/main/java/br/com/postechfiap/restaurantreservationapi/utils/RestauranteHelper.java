@@ -13,6 +13,11 @@ public class RestauranteHelper {
     private final RestauranteRepository restauranteRepository;
 
 
+    public Restaurante getRestauranteById(Long restauranteId){
+        return restauranteRepository.findById(restauranteId).orElseThrow(RestauranteNotFoundException::new);
+    }
+
+
     public Restaurante validateRestauranteExists(Long restauranteId) {
         return restauranteRepository.findById(restauranteId)
                 .orElseThrow(RestauranteNotFoundException::new);

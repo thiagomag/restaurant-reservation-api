@@ -1,5 +1,6 @@
 package br.com.postechfiap.restaurantreservationapi.entities;
 
+import br.com.postechfiap.restaurantreservationapi.dto.reserva.ReservaResponse;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,12 +31,15 @@ public class Reserva extends BaseEntity<Long> {
     @JoinColumn(name = "restaurante_id", nullable = false)
     private Restaurante restaurante;
 
-    @OneToMany
-    @JoinColumn(name = "reserva_id")
-    private List<Mesa> mesas;  // Agora é uma lista de mesas
+    @ManyToOne
+    @JoinColumn(name = "mesa_id", nullable = false)
+    private Mesa mesa;  // Agora é uma lista de mesas
 
     private LocalDateTime dataHoraReserva;
 
     // Quantidade de pessoas para a reserva
     private int numeroDePessoas;
+
+
+
 }

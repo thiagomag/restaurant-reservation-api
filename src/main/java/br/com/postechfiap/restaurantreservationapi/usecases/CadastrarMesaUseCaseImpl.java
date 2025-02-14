@@ -3,8 +3,10 @@ package br.com.postechfiap.restaurantreservationapi.usecases;
 import br.com.postechfiap.restaurantreservationapi.dto.mesa.MesaRequest;
 import br.com.postechfiap.restaurantreservationapi.dto.mesa.MesaResponse;
 import br.com.postechfiap.restaurantreservationapi.entities.Mesa;
+import br.com.postechfiap.restaurantreservationapi.interfaces.mesa.CadastrarMesaUseCase;
 import br.com.postechfiap.restaurantreservationapi.interfaces.mesa.MesaRepository;
 import br.com.postechfiap.restaurantreservationapi.utils.MesaHelper;
+import br.com.postechfiap.restaurantreservationapi.utils.RestauranteHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,12 +15,14 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class CadastrarMesaUseCaseImpl {
+public class CadastrarMesaUseCaseImpl implements CadastrarMesaUseCase {
 
     private final MesaRepository mesaRepository;
     private final MesaHelper mesaHelper;
+    private final RestauranteHelper restauranteHelper;
 
-    public MesaResponse cadastrarMesas(MesaRequest request) {
+    @Override
+    public MesaResponse execute (MesaRequest request) {
         List<Mesa> mesasCriadas = new ArrayList<>();
 
         for (int i = 0; i < request.getQuantidadeMesas(); i++) {
@@ -27,9 +31,8 @@ public class CadastrarMesaUseCaseImpl {
 
             Mesa novaMesa = Mesa.builder()
                     .id(identificadorMesa)
-                    .restauranteId(request.getRestauranteId())
+                    .restaurante(restauranteHelper.getRestauranteById(request.getRestauranteId()))
                     .numeroMesa(novoNumeroMesa)
-                    .capacidade(2)
                     .build();
 
             mesaRepository.save(novaMesa);
