@@ -1,5 +1,6 @@
 package br.com.postechfiap.restaurantreservationapi.enuns;
 
+
 public enum NotaEnum {
     PESSIMO(1, "Péssimo"),
     RUIM(2, "Ruim"),

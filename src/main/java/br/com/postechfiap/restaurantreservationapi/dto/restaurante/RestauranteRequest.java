@@ -28,23 +28,23 @@ import lombok.ToString;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class RestauranteRequest {
 
-    @NotBlank(message = "O nome do restaurante é obrigatório")
+    //@NotBlank(message = "O nome do restaurante é obrigatório")
     @Schema(description = "Nome do restaurante", example = "Restaurante do Chef", required = true)
     private String nome;
 
-    @NotNull(message = "O endereço é obrigatório")
-    @Schema(description = "Endereço completo do restaurante", example = "{ \"rua\": \"Rua das Flores\", \"numero\": \"123\" }", required = true)
+    //@NotNull(message = "O endereço é obrigatório")
+    @Schema(description = "Endereço completo do restaurante",  required = true)
     private EnderecoRequest endereco;
 
-    @NotNull(message = "O tipo de cozinha é obrigatório")
+    //@NotNull(message = "O tipo de cozinha é obrigatório")
     @Schema(description = "Tipo de cozinha do restaurante", example = "ITALIANA", required = true)
     private TiposCozinhaEnum tipoCozinha;
 
-    @Size(max = 100, message = "O horário de funcionamento deve ter no máximo 100 caracteres")
+    //@Size(max = 100, message = "O horário de funcionamento deve ter no máximo 100 caracteres")
     @Schema(description = "Horário de funcionamento do restaurante", example = "10:00 - 22:00")
     private String horarioFuncionamento;
 
-    @NotBlank(message = "A capacidade do restaurante é obrigatória")
+    //@NotBlank(message = "A capacidade do restaurante é obrigatória")
     @Schema(description = "Capacidade total de pessoas do restaurante", example = "100", required = true)
     private String capacidade;
 }

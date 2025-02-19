@@ -27,12 +27,11 @@ public class Avaliacao extends BaseEntity<Long> {
     @Column(name = "restaurante_id", nullable = false)
     private Long restauranteId;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     private NotaEnum nota;  // Enum para representar a nota (1 a 5)
 
     private String comentario = "";
 
-    private LocalDateTime dataCriacao = LocalDateTime.now();  // Data e hora da criação da avaliação
 
 
 

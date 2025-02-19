@@ -1,11 +1,9 @@
 package br.com.postechfiap.restaurantreservationapi.entities;
 
-import br.com.postechfiap.restaurantreservationapi.dto.reserva.ReservaResponse;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor

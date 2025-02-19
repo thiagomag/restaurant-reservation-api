@@ -2,6 +2,7 @@ package br.com.postechfiap.restaurantreservationapi.usecases.reserva;
 
 import br.com.postechfiap.restaurantreservationapi.dto.reserva.ReservaRequest;
 import br.com.postechfiap.restaurantreservationapi.dto.reserva.ReservaResponse;
+import br.com.postechfiap.restaurantreservationapi.dto.reserva.ReservaResponseList;
 import br.com.postechfiap.restaurantreservationapi.entities.Mesa;
 import br.com.postechfiap.restaurantreservationapi.entities.Reserva;
 import br.com.postechfiap.restaurantreservationapi.entities.Restaurante;
@@ -28,7 +29,7 @@ public class ReservarMesaUseCaseImpl implements ReservarMesaUseCase {
 
 
     @Override
-    public ReservaResponse execute(ReservaRequest reservaRequest) {
+    public ReservaResponseList execute(ReservaRequest reservaRequest) {
         // Passo 1: Validar se o Restaurante existe
         Restaurante restaurante = restauranteHelper.validateRestauranteExists(reservaRequest.getRestauranteId());
 
@@ -36,26 +37,29 @@ public class ReservarMesaUseCaseImpl implements ReservarMesaUseCase {
         Usuario usuario = usuarioHelper.validateUsuarioExists(reservaRequest.getUsuarioId());
 
         // Passo 3: Verificar o número de mesas necessárias
-        List<Mesa> mesasAReservar = mesaHelper.findMesasDisponiveis(reservaRequest.getRestauranteId(),
-                reservaRequest.getNumeroDePessoas(), reservaRequest.getDataHoraReserva());
+        List<Mesa> mesasAReservar = mesaHelper.findMesasDisponiveis(
+                reservaRequest.getRestauranteId(),
+                reservaRequest.getNumeroDePessoas(),
+                reservaRequest.getDataHoraReserva()
+        );
 
-        // Passo 4: Criar as Reservas (uma para cada mesa)
-        List<Reserva> reservas = mesasAReservar.stream()
-                .map(mesa -> Reserva.builder()
-                        .usuario(usuario)
-                        .restaurante(restaurante)
-                        .mesa(mesa)  // Cada reserva será para uma única mesa
-                        .dataHoraReserva(reservaRequest.getDataHoraReserva())
-                        .numeroDePessoas(reservaRequest.getNumeroDePessoas())
-                        .build())
-                .collect(Collectors.toList());
+        // Passo 4: Criar e salvar reservas no banco de dados
+        List<Reserva> reservasCriadas = mesasAReservar.stream().map(mesa -> {
+            Reserva reserva = new Reserva();
+            reserva.setMesa(mesa);
+            reserva.setRestaurante(restaurante);
+            reserva.setUsuario(usuario);
+            reserva.setDataHoraReserva(reservaRequest.getDataHoraReserva());
+            reserva.setNumeroDePessoas(reservaRequest.getNumeroDePessoas());
 
-        // Passo 5: Salvar as Reservas no banco
-        reservaRepository.saveAll(reservas);
+            return reservaRepository.save(reserva);
+        }).toList();
 
-        // Passo 6: Retornar a resposta com a lista de reservas
-        return ReservaResponse.builder()
-                .reservas(reservas)
+        // Passo 5: Retornar a resposta formatada usando ReservaResponse.toList
+        return ReservaResponseList.builder()
+                .usuarioId(usuario.getId())
+                .restauranteId(restaurante.getId())
+                .reservas(ReservaResponse.toList(reservasCriadas))
                 .build();
     }
 }

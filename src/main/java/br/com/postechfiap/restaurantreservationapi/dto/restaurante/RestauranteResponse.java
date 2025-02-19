@@ -5,6 +5,7 @@ import br.com.postechfiap.restaurantreservationapi.enuns.TiposCozinhaEnum;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -24,10 +25,21 @@ import lombok.ToString;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class RestauranteResponse {
 
+    @Schema(description = "ID do restaurante", example = "1")
     private Long id;
+
+    @Schema(description = "Nome do restaurante", example = "Restaurante do Chef")
     private String nome;
+
+    @Schema(description = "Endereço do restaurante")
     private EnderecoResponse endereco;
+
+    @Schema(description = "Tipo de cozinha do restaurante", example = "ITALIANA")
     private TiposCozinhaEnum tipoCozinha;
+
+    @Schema(description = "Horário de funcionamento do restaurante", example = "10:00 - 22:00")
     private String horarioFuncionamento;
+
+    @Schema(description = "Capacidade total de pessoas do restaurante", example = "100")
     private String capacidade;
 }

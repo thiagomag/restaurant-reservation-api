@@ -2,6 +2,7 @@ package br.com.postechfiap.restaurantreservationapi.controller;
 
 import br.com.postechfiap.restaurantreservationapi.dto.mesa.MesaRequest;
 import br.com.postechfiap.restaurantreservationapi.dto.mesa.MesaResponse;
+import br.com.postechfiap.restaurantreservationapi.dto.mesa.MesaResponseList;
 import br.com.postechfiap.restaurantreservationapi.dto.restaurante.RestauranteRequest;
 import br.com.postechfiap.restaurantreservationapi.dto.restaurante.RestauranteResponse;
 import br.com.postechfiap.restaurantreservationapi.interfaces.mesa.CadastrarMesaUseCase;
@@ -28,8 +29,8 @@ public class MesaController {
 
     @PostMapping
     @Operation(summary = "Cadastrar Mesas", description = "Cadastra novas mesas para um restaurante.")
-    public ResponseEntity<MesaResponse> cadastrarMesas(@RequestBody @Valid MesaRequest request) {
-        MesaResponse mesasCriadas = cadastrarMesaUseCase.execute(request);
+    public ResponseEntity<MesaResponseList> cadastrarMesas(@RequestBody @Valid MesaRequest request) {
+        MesaResponseList mesasCriadas = cadastrarMesaUseCase.execute(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(mesasCriadas);
     }
 }
