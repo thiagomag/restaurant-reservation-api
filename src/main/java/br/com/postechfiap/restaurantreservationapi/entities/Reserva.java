@@ -31,7 +31,7 @@ public class Reserva extends BaseEntity<Long> {
 
     @ManyToOne
     @JoinColumn(name = "mesa_id", nullable = false)
-    private Mesa mesa;  // Agora é uma lista de mesas
+    private Mesa mesa;
 
     private LocalDateTime dataHoraReserva;
 
