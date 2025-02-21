@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
-import java.time.LocalDateTime;
+
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,8 +27,11 @@ public class AvaliacaoResponse {
     @Schema(description = "ID da reserva associada à avaliação", example = "123")
     private Long reservaId;
 
-    @Schema(description = "ID do restaurante avaliado", example = "456")
-    private Long restauranteId;
+    @Schema(description = "ID do usuário que fez a avaliação", example = "1")
+    private Long usuarioId;
+
+    @Schema(description = "Nome do restaurante avaliado", example = "456")
+    private String restauranteName;
 
     @Schema(description = "Nota da avaliação (de 1 a 5)", example = "4")
     private Integer nota;

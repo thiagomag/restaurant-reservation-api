@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class MesaHelper {
 
     private final MesaRepository mesaRepository;
-    private final ReservaRepository reservaRepository;
+    private final ReservaHelper reservaHelper;
 
     public Integer obterProximoNumeroMesa(Long restauranteId) {
         return mesaRepository.findTopByRestauranteIdOrderByNumeroMesaDesc(restauranteId)
@@ -43,13 +43,14 @@ public class MesaHelper {
         LocalDateTime fimIntervalo = dataHoraReserva.plusHours(2);
 
         // Passo 3: Buscar reservas para o restaurante dentro do intervalo de tempo
-        List<Reserva> reservasExistentes = reservaRepository.findByRestauranteIdAndDataHoraReservaBetween(
+        List<Reserva> reservasExistentes = reservaHelper.getReservaByHoraMarcada(
                 restauranteId, inicioIntervalo, fimIntervalo);
 
         // Passo 4: Filtrar as mesas que estão reservadas
         Set<Mesa> mesasIndisponiveis = reservasExistentes.stream()
-                .map(Reserva::getMesa)  // Agora, uma reserva tem uma única mesa
+                .flatMap(reserva -> reserva.getMesas().stream())
                 .collect(Collectors.toSet());
+
 
         // Passo 5: Subtrair mesas reservadas das mesas totais para encontrar as mesas disponíveis
         List<Mesa> mesasDisponiveis = mesasTotais.stream()

@@ -6,6 +6,9 @@ import br.com.postechfiap.restaurantreservationapi.interfaces.reserva.ReservaRep
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class ReservaHelper {
@@ -17,7 +20,11 @@ public class ReservaHelper {
                 .orElseThrow(ReservaNotFoundException::new);
     }
 
-
+    public List<Reserva> getReservaByHoraMarcada
+            (Long restauranteId, LocalDateTime inicioIntervalo, LocalDateTime fimIntervalo) {
+       return reservaRepository.findByRestauranteIdAndDataHoraReservaBetween(
+                restauranteId, inicioIntervalo, fimIntervalo);
+    }
 
 
 }

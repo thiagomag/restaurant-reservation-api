@@ -2,7 +2,6 @@ package br.com.postechfiap.restaurantreservationapi.usecases.reserva;
 
 import br.com.postechfiap.restaurantreservationapi.dto.reserva.ReservaRequest;
 import br.com.postechfiap.restaurantreservationapi.dto.reserva.ReservaResponse;
-import br.com.postechfiap.restaurantreservationapi.dto.reserva.ReservaResponseList;
 import br.com.postechfiap.restaurantreservationapi.entities.Mesa;
 import br.com.postechfiap.restaurantreservationapi.entities.Reserva;
 import br.com.postechfiap.restaurantreservationapi.entities.Restaurante;
@@ -27,39 +26,42 @@ public class ReservarMesaUseCaseImpl implements ReservarMesaUseCase {
     private final MesaHelper mesaHelper;
     private final ReservaRepository reservaRepository;
 
-
     @Override
-    public ReservaResponseList execute(ReservaRequest reservaRequest) {
+    public ReservaResponse execute(ReservaRequest reservaRequest) {
         // Passo 1: Validar se o Restaurante existe
         Restaurante restaurante = restauranteHelper.validateRestauranteExists(reservaRequest.getRestauranteId());
 
         // Passo 2: Validar se o Usuário existe
         Usuario usuario = usuarioHelper.validateUsuarioExists(reservaRequest.getUsuarioId());
 
-        // Passo 3: Verificar o número de mesas necessárias
+        // Passo 3: Buscar as mesas disponíveis
         List<Mesa> mesasAReservar = mesaHelper.findMesasDisponiveis(
                 reservaRequest.getRestauranteId(),
                 reservaRequest.getNumeroDePessoas(),
                 reservaRequest.getDataHoraReserva()
         );
 
-        // Passo 4: Criar e salvar reservas no banco de dados
-        List<Reserva> reservasCriadas = mesasAReservar.stream().map(mesa -> {
-            Reserva reserva = new Reserva();
-            reserva.setMesa(mesa);
-            reserva.setRestaurante(restaurante);
-            reserva.setUsuario(usuario);
-            reserva.setDataHoraReserva(reservaRequest.getDataHoraReserva());
-            reserva.setNumeroDePessoas(reservaRequest.getNumeroDePessoas());
+        if (mesasAReservar.isEmpty()) {
+            throw new RuntimeException("Não há mesas disponíveis para a reserva.");
+        }
 
-            return reservaRepository.save(reserva);
-        }).toList();
+        // Passo 4: Criar uma única reserva associando todas as mesas
+        Reserva reserva = new Reserva();
+        reserva.setMesas(mesasAReservar);
+        reserva.setRestaurante(restaurante);
+        reserva.setUsuario(usuario);
+        reserva.setDataHoraReserva(reservaRequest.getDataHoraReserva());
+        reserva.setNumeroDePessoas(reservaRequest.getNumeroDePessoas());
 
-        // Passo 5: Retornar a resposta formatada usando ReservaResponse.toList
-        return ReservaResponseList.builder()
+        reserva = reservaRepository.save(reserva);
+        // Passo 5: Retornar a resposta formatada
+        return ReservaResponse.builder()
+                .reservaId(reserva.getId())
                 .usuarioId(usuario.getId())
-                .restauranteId(restaurante.getId())
-                .reservas(ReservaResponse.toList(reservasCriadas))
+                .restauranteName(restaurante.getNome())
+                .numeroDePessoas(reserva.getNumeroDePessoas())
+                .dataHoraReserva(reserva.getDataHoraReserva())
+                .mesas(reserva.getMesas().stream().map(Mesa::getId).collect(Collectors.toList())) // Retorna os IDs das mesas reservadas
                 .build();
     }
 }

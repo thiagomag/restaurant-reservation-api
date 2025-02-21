@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,9 +31,13 @@ public class Reserva extends BaseEntity<Long> {
     @JoinColumn(name = "restaurante_id", nullable = false)
     private Restaurante restaurante;
 
-    @ManyToOne
-    @JoinColumn(name = "mesa_id", nullable = false)
-    private Mesa mesa;
+    @ManyToMany
+    @JoinTable(
+            name = "reserva_mesa",  // Nome da tabela intermediária
+            joinColumns = @JoinColumn(name = "reserva_id"), // FK para Reserva
+            inverseJoinColumns = @JoinColumn(name = "mesa_id") // FK para Mesa
+    )
+    private List<Mesa> mesas = new ArrayList<>();
 
     private LocalDateTime dataHoraReserva;
 

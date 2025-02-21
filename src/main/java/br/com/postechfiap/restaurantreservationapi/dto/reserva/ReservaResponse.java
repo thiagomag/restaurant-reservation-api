@@ -1,6 +1,7 @@
 package br.com.postechfiap.restaurantreservationapi.dto.reserva;
 
 
+import br.com.postechfiap.restaurantreservationapi.entities.Mesa;
 import br.com.postechfiap.restaurantreservationapi.entities.Reserva;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
@@ -24,19 +25,23 @@ import java.util.stream.Collectors;
 public class ReservaResponse {
 
     private Long reservaId;
-    private String mesaId;
+    private Long usuarioId;
+    private String  restauranteName;
+    private List<String> mesas;  // Agora, temos uma lista de IDs de mesas
     private LocalDateTime dataHoraReserva;
     private int numeroDePessoas;
 
+    // Converte uma única reserva para DTO, incluindo as mesas associadas
     public static ReservaResponse toDto(Reserva reserva) {
         return ReservaResponse.builder()
                 .reservaId(reserva.getId())
-                .mesaId(reserva.getMesa().getId())
+                .mesas(reserva.getMesas().stream().map(Mesa::getId).collect(Collectors.toList())) // Lista de IDs de mesas
                 .dataHoraReserva(reserva.getDataHoraReserva())
                 .numeroDePessoas(reserva.getNumeroDePessoas())
                 .build();
     }
 
+    // Converte uma lista de reservas para a lista de DTOs
     public static List<ReservaResponse> toList(List<Reserva> reservas) {
         return reservas.stream().map(ReservaResponse::toDto).collect(Collectors.toList());
     }

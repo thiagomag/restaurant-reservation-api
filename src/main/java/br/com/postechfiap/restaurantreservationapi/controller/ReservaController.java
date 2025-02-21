@@ -2,7 +2,7 @@ package br.com.postechfiap.restaurantreservationapi.controller;
 
 
 import br.com.postechfiap.restaurantreservationapi.dto.reserva.ReservaRequest;
-import br.com.postechfiap.restaurantreservationapi.dto.reserva.ReservaResponseList;
+import br.com.postechfiap.restaurantreservationapi.dto.reserva.ReservaResponse;
 import br.com.postechfiap.restaurantreservationapi.interfaces.reserva.ReservarMesaUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,8 +27,8 @@ public class ReservaController {
 
     @PostMapping
     @Operation(summary = "Reserva de Mesas em Restaurante", description = "Cadastra novas mesas para um restaurante.")
-    public ResponseEntity<ReservaResponseList> cadastrarMesas(@RequestBody @Valid ReservaRequest request) {
-        ReservaResponseList reservaCriada = reservarMesaUseCase.execute(request);
+    public ResponseEntity<ReservaResponse> cadastrarMesas(@RequestBody @Valid ReservaRequest request) {
+        ReservaResponse reservaCriada = reservarMesaUseCase.execute(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(reservaCriada);
     }
 }
