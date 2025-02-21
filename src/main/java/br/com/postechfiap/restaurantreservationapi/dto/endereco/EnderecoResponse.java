@@ -1,5 +1,6 @@
 package br.com.postechfiap.restaurantreservationapi.dto.endereco;
 
+import br.com.postechfiap.restaurantreservationapi.entities.Endereco;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -46,4 +47,17 @@ public class EnderecoResponse {
 
     @Schema(description = "CEP do endereço", example = "01000-000")
     private String cep;
+
+    // Método de conversão
+    public static EnderecoResponse toDTO(Endereco endereco) {
+        return EnderecoResponse.builder()
+                .logradouro(endereco.getLogradouro())
+                .numero(endereco.getNumero())
+                .complemento(endereco.getComplemento())
+                .bairro(endereco.getBairro())
+                .cidade(endereco.getCidade())
+                .estado(endereco.getEstado())
+                .cep(endereco.getCep())
+                .build();
+    }
 }

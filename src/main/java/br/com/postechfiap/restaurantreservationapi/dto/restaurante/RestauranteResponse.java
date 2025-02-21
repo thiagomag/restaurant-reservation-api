@@ -1,6 +1,7 @@
 package br.com.postechfiap.restaurantreservationapi.dto.restaurante;
 
 import br.com.postechfiap.restaurantreservationapi.dto.endereco.EnderecoResponse;
+import br.com.postechfiap.restaurantreservationapi.entities.Restaurante;
 import br.com.postechfiap.restaurantreservationapi.enuns.TiposCozinhaEnum;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
@@ -42,4 +43,16 @@ public class RestauranteResponse {
 
     @Schema(description = "Capacidade total de pessoas do restaurante", example = "100")
     private String capacidade;
+
+    // Método de conversão
+    public static RestauranteResponse toDTO(Restaurante restaurante) {
+        return RestauranteResponse.builder()
+                .id(restaurante.getId())
+                .nome(restaurante.getNome())
+                .endereco(EnderecoResponse.toDTO(restaurante.getEndereco()))
+                .tipoCozinha(restaurante.getTipoCozinha())
+                .horarioFuncionamento(restaurante.getHorarioFuncionamento())
+                .capacidade(String.valueOf(restaurante.getCapacidade()))
+                .build();
+    }
 }
