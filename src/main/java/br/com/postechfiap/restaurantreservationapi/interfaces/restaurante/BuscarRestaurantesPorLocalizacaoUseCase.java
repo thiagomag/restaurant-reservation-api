@@ -1,4 +1,12 @@
 package br.com.postechfiap.restaurantreservationapi.interfaces.restaurante;
 
-public interface BuscarRestaurantesPorLocalizacaoUseCase {
+import br.com.postechfiap.restaurantreservationapi.dto.restaurante.RestauranteResponse;
+import br.com.postechfiap.restaurantreservationapi.dto.restaurante.busca.RestauranteBuscaLocalizacaoRequest;
+import br.com.postechfiap.restaurantreservationapi.dto.restaurante.busca.RestauranteBuscaTipoCozinhaRequest;
+import br.com.postechfiap.restaurantreservationapi.interfaces.UseCase;
+
+import java.util.List;
+
+public interface BuscarRestaurantesPorLocalizacaoUseCase
+        extends UseCase<RestauranteBuscaLocalizacaoRequest, List<RestauranteResponse>> {
 }

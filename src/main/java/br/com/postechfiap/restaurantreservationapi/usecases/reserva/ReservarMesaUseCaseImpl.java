@@ -35,7 +35,7 @@ public class ReservarMesaUseCaseImpl implements ReservarMesaUseCase {
         Usuario usuario = usuarioHelper.validateUsuarioExists(reservaRequest.getUsuarioId());
 
         // Passo 3: Buscar as mesas disponíveis
-        List<Mesa> mesasAReservar = mesaHelper.findMesasDisponiveis(
+        List<Mesa> mesasAReservar = mesaHelper.calculaMesasDisponiveisByRestaurante(
                 reservaRequest.getRestauranteId(),
                 reservaRequest.getNumeroDePessoas(),
                 reservaRequest.getDataHoraReserva()

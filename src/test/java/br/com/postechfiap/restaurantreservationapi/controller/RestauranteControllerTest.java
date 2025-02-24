@@ -32,8 +32,8 @@ class RestauranteControllerTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        final RestauranteController restauranteController = new RestauranteController(cadastrarRestauranteUseCase);
-        mockMvc = MockMvcBuilders.standaloneSetup(restauranteController).build();
+        //final RestauranteController restauranteController = new RestauranteController(cadastrarRestauranteUseCase);
+        //mockMvc = MockMvcBuilders.standaloneSetup(restauranteController).build();
     }
 
     @Test

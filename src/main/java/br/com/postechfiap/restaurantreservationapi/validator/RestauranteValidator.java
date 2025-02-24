@@ -1,6 +1,7 @@
 package br.com.postechfiap.restaurantreservationapi.validator;
 
 
+import br.com.postechfiap.restaurantreservationapi.enuns.TiposCozinhaEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,14 @@ public class RestauranteValidator {
     public void validateNomeTamanho(String nome) {
         if (nome.length() < 3) {
             throw new IllegalArgumentException("O nome do restaurante deve ter pelo menos 3 caracteres");
+        }
+    }
+
+
+    // Valida se o tipo de cozinha não é nulo
+    public void validateTipoCozinha(TiposCozinhaEnum tipoCozinha) {
+        if (tipoCozinha == null) {
+            throw new IllegalArgumentException("O tipo de cozinha não pode ser nulo.");
         }
     }
 

@@ -31,11 +31,11 @@ public class Reserva extends BaseEntity<Long> {
     @JoinColumn(name = "restaurante_id", nullable = false)
     private Restaurante restaurante;
 
-    @ManyToMany
+    @ManyToMany (cascade = CascadeType.ALL)
     @JoinTable(
-            name = "reserva_mesa",  // Nome da tabela intermediária
-            joinColumns = @JoinColumn(name = "reserva_id"), // FK para Reserva
-            inverseJoinColumns = @JoinColumn(name = "mesa_id") // FK para Mesa
+            name = "reserva_mesa",
+            joinColumns = @JoinColumn(name = "reserva_id"),
+            inverseJoinColumns = @JoinColumn(name = "mesa_id")
     )
     private List<Mesa> mesas = new ArrayList<>();
 

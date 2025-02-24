@@ -27,37 +27,35 @@ public class EnderecoResponse {
     @Schema(description = "ID do endereço", example = "1")
     private Long id;
 
+    @Schema(description = "CEP do endereço", example = "01000-000")
+    private String cep;
+
+    @Schema(description = "Estado do endereço", example = "SP")
+    private String estado;
+
+    @Schema(description = "Cidade do endereço", example = "São Paulo")
+    private String cidade;
+
+    @Schema(description = "Bairro do endereço", example = "Centro")
+    private String bairro;
+
     @Schema(description = "Logradouro do endereço", example = "Rua das Flores")
     private String logradouro;
 
     @Schema(description = "Número do endereço", example = "123")
     private String numero;
 
-    @Schema(description = "Complemento do endereço", example = "Apto 101")
-    private String complemento;
-
-    @Schema(description = "Bairro do endereço", example = "Centro")
-    private String bairro;
-
-    @Schema(description = "Cidade do endereço", example = "São Paulo")
-    private String cidade;
-
-    @Schema(description = "Estado do endereço", example = "SP")
-    private String estado;
-
-    @Schema(description = "CEP do endereço", example = "01000-000")
-    private String cep;
 
     // Método de conversão
     public static EnderecoResponse toDTO(Endereco endereco) {
         return EnderecoResponse.builder()
+                .id(endereco.getId())
+                .cep(endereco.getCep())
+                .estado(endereco.getEstado())
+                .cidade(endereco.getCidade())
+                .bairro(endereco.getBairro())
                 .logradouro(endereco.getLogradouro())
                 .numero(endereco.getNumero())
-                .complemento(endereco.getComplemento())
-                .bairro(endereco.getBairro())
-                .cidade(endereco.getCidade())
-                .estado(endereco.getEstado())
-                .cep(endereco.getCep())
                 .build();
     }
 }
