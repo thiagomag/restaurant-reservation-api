@@ -44,6 +44,4 @@ public class Reserva extends BaseEntity<Long> {
     // Quantidade de pessoas para a reserva
     private int numeroDePessoas;
 
-
-
 }

@@ -46,12 +46,12 @@ public class ReservarMesaUseCaseImpl implements ReservarMesaUseCase {
         }
 
         // Passo 4: Criar uma única reserva associando todas as mesas
-        Reserva reserva = new Reserva();
-        reserva.setMesas(mesasAReservar);
-        reserva.setRestaurante(restaurante);
-        reserva.setUsuario(usuario);
-        reserva.setDataHoraReserva(reservaRequest.getDataHoraReserva());
-        reserva.setNumeroDePessoas(reservaRequest.getNumeroDePessoas());
+        Reserva reserva = Reserva.builder()
+                .mesas(mesasAReservar)
+                .restaurante(restaurante)
+                .usuario(usuario)
+                .dataHoraReserva(reservaRequest.getDataHoraReserva()).numeroDePessoas(reservaRequest.getNumeroDePessoas()).build();
+
 
         reserva = reservaRepository.save(reserva);
         // Passo 5: Retornar a resposta formatada

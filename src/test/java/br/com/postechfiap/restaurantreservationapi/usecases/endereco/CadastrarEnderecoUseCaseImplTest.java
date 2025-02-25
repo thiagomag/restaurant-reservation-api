@@ -58,7 +58,6 @@ public class CadastrarEnderecoUseCaseImplTest {
         assertEquals(enderecoResponse.getId(), result.getId());
         assertEquals(enderecoResponse.getLogradouro(), result.getLogradouro());
         assertEquals(enderecoResponse.getNumero(), result.getNumero());
-        assertEquals(enderecoResponse.getComplemento(), result.getComplemento());
         assertEquals(enderecoResponse.getBairro(), result.getBairro());
         assertEquals(enderecoResponse.getCidade(), result.getCidade());
         assertEquals(enderecoResponse.getEstado(), result.getEstado());

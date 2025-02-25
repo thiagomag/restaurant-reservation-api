@@ -42,4 +42,9 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+    testLogging {
+        // Exibe informações sobre os testes passados, falhados e ignorados
+        events "PASSED", "FAILED", "SKIPPED"
+    }
+
 }

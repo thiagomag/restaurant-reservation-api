@@ -43,7 +43,7 @@ public class EnderecoResponse {
     private String logradouro;
 
     @Schema(description = "Número do endereço", example = "123")
-    private String numero;
+    private int numero;
 
 
     // Método de conversão
