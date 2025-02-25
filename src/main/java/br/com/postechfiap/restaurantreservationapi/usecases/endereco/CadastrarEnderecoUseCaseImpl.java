@@ -1,4 +1,4 @@
-package br.com.postechfiap.restaurantreservationapi.usecases;
+package br.com.postechfiap.restaurantreservationapi.usecases.endereco;
 
 import br.com.postechfiap.restaurantreservationapi.adapters.endereco.EnderecoAdapter;
 import br.com.postechfiap.restaurantreservationapi.adapters.endereco.EnderecoResponseAdapter;

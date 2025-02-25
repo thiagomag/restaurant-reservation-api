@@ -5,7 +5,6 @@ import br.com.postechfiap.restaurantreservationapi.adapters.restaurante.Restaura
 import br.com.postechfiap.restaurantreservationapi.adapters.restaurante.RestauranteResponseAdapter;
 import br.com.postechfiap.restaurantreservationapi.interfaces.restaurante.CadastrarRestauranteUseCase;
 import br.com.postechfiap.restaurantreservationapi.interfaces.restaurante.RestauranteRepository;
-import br.com.postechfiap.restaurantreservationapi.usecases.CadastrarRestauranteUseCaseImpl;
 import br.com.postechfiap.restaurantreservationapi.utils.RestauranteTestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
