@@ -5,6 +5,6 @@ import br.com.postechfiap.restaurantreservationapi.exception.EntityNotFoundExcep
 public class ReservaNotFoundException extends EntityNotFoundException {
 
     public ReservaNotFoundException() {
-        super("Reserva");
+        super("Reserva", "a");
     }
 }

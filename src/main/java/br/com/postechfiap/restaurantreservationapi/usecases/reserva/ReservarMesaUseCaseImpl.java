@@ -41,9 +41,6 @@ public class ReservarMesaUseCaseImpl implements ReservarMesaUseCase {
                 reservaRequest.getDataHoraReserva()
         );
 
-        if (mesasAReservar.isEmpty()) {
-            throw new RuntimeException("Não há mesas disponíveis para a reserva.");
-        }
 
         // Passo 4: Criar uma única reserva associando todas as mesas
         Reserva reserva = Reserva.builder()
