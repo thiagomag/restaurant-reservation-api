@@ -34,7 +34,7 @@ public class RestauranteTestUtils {
                 .nome("Restaurante Teste")
                 .tipoCozinha(TiposCozinhaEnum.BAIANA)
                 .horarioFuncionamento("10:00 - 22:00")
-                .capacidade("100")
+                .capacidade(100)
                 .endereco(EnderecoTestUtils.buildEnderecoResponse())
                 .build();
     }
