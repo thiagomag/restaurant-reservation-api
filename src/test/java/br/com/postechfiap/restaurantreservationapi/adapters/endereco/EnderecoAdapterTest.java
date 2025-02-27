@@ -32,7 +32,6 @@ public class EnderecoAdapterTest {
         assertEquals(enderecoRequest.getCep(), actual.getCep());
         assertEquals(enderecoRequest.getLogradouro(), actual.getLogradouro());
         assertEquals(enderecoRequest.getNumero(), actual.getNumero());
-        assertEquals(enderecoRequest.getComplemento(), actual.getComplemento());
         assertEquals(enderecoRequest.getBairro(), actual.getBairro());
         assertEquals(enderecoRequest.getCidade(), actual.getCidade());
         assertEquals(enderecoRequest.getEstado(), actual.getEstado());
@@ -52,7 +51,6 @@ public class EnderecoAdapterTest {
         assertEquals(enderecoRequest.getCep(), actual.getCep());
         assertEquals(enderecoRequest.getLogradouro(), actual.getLogradouro());
         assertEquals(enderecoRequest.getNumero(), actual.getNumero());
-        assertEquals(enderecoRequest.getComplemento(), actual.getComplemento());
         assertEquals(enderecoRequest.getBairro(), actual.getBairro());
         assertEquals(enderecoRequest.getCidade(), actual.getCidade());
         assertEquals(enderecoRequest.getEstado(), actual.getEstado());

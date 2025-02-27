@@ -34,5 +34,5 @@ public class Restaurante extends BaseEntity<Long> {
     @Enumerated(EnumType.STRING)
     private TiposCozinhaEnum tipoCozinha;
     private String horarioFuncionamento;
-    private String capacidade;
+    private int capacidade;
 }

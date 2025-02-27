@@ -6,6 +6,8 @@ import br.com.postechfiap.restaurantreservationapi.interfaces.restaurante.Restau
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @AllArgsConstructor
 public class RestauranteHelper {
@@ -16,7 +18,6 @@ public class RestauranteHelper {
     public Restaurante getRestauranteById(Long restauranteId){
         return restauranteRepository.findById(restauranteId).orElseThrow(RestauranteNotFoundException::new);
     }
-
 
     public Restaurante validateRestauranteExists(Long restauranteId) {
         return restauranteRepository.findById(restauranteId)

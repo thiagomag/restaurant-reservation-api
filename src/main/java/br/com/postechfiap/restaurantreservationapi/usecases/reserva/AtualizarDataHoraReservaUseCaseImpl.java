@@ -8,6 +8,7 @@ import br.com.postechfiap.restaurantreservationapi.exception.reserva.ReservaNotF
 import br.com.postechfiap.restaurantreservationapi.interfaces.reserva.AtualizarDataHoraReservaUseCase;
 import br.com.postechfiap.restaurantreservationapi.interfaces.reserva.ReservaRepository;
 import br.com.postechfiap.restaurantreservationapi.utils.MesaHelper;
+import br.com.postechfiap.restaurantreservationapi.utils.ReservaHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,13 +19,13 @@ import java.util.List;
 public class AtualizarDataHoraReservaUseCaseImpl implements AtualizarDataHoraReservaUseCase {
 
     private final ReservaRepository reservaRepository;
+    private final ReservaHelper reservaHelper;
     private final MesaHelper mesaHelper;
 
     @Override
     public ReservaResponse execute(ReservaAtualizarDataHoraRequest dto) {
         // Passo 1: Buscar a reserva existente
-        Reserva reserva = reservaRepository.findById(dto.getReservaId())
-                .orElseThrow(ReservaNotFoundException::new);
+        Reserva reserva = reservaHelper.getReservaById(dto.getReservaId());
 
         // Passo 2: Buscar novas mesas disponíveis para a nova data/hora
         List<Mesa> novasMesasDisponiveis = mesaHelper.calculaMesasDisponiveisByRestaurante(

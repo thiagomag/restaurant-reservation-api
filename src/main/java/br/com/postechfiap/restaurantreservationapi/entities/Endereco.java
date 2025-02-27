@@ -27,7 +27,7 @@ public class Endereco extends BaseEntity<Long> {
     @SequenceGenerator(name = "sequenceGenerator", sequenceName = "endereco_id_seq", allocationSize = 1)
     private Long id;
     private String logradouro;
-    private String numero;
+    private int numero;
     private String bairro;
     private String cidade;
     private String estado;

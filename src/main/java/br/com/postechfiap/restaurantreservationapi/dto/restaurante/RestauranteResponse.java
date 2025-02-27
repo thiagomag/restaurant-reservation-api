@@ -42,7 +42,7 @@ public class RestauranteResponse {
     private String horarioFuncionamento;
 
     @Schema(description = "Capacidade total de pessoas do restaurante", example = "100")
-    private String capacidade;
+    private int capacidade;
 
     // Método de conversão
     public static RestauranteResponse toDTO(Restaurante restaurante) {
@@ -52,7 +52,7 @@ public class RestauranteResponse {
                 .endereco(EnderecoResponse.toDTO(restaurante.getEndereco()))
                 .tipoCozinha(restaurante.getTipoCozinha())
                 .horarioFuncionamento(restaurante.getHorarioFuncionamento())
-                .capacidade(String.valueOf(restaurante.getCapacidade()))
+                .capacidade(restaurante.getCapacidade())
                 .build();
     }
 }

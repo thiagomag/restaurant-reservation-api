@@ -5,6 +5,6 @@ import br.com.postechfiap.restaurantreservationapi.exception.EntityNotFoundExcep
 public class UsuarioNotFoundException extends EntityNotFoundException {
 
     public UsuarioNotFoundException() {
-        super("Usuário");
+        super("Usuário", "o");
     }
 }
