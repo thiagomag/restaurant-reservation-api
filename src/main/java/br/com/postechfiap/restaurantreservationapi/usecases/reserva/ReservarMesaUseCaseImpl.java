@@ -10,7 +10,7 @@ import br.com.postechfiap.restaurantreservationapi.interfaces.reserva.ReservaRep
 import br.com.postechfiap.restaurantreservationapi.interfaces.reserva.ReservarMesaUseCase;
 import br.com.postechfiap.restaurantreservationapi.utils.MesaHelper;
 import br.com.postechfiap.restaurantreservationapi.utils.RestauranteHelper;
-import br.com.postechfiap.restaurantreservationapi.utils.UsuarioHelper;
+import br.com.postechfiap.restaurantreservationapi.validator.UsuarioValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +21,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ReservarMesaUseCaseImpl implements ReservarMesaUseCase {
 
+    private final UsuarioValidator usuarioValidator;
     private final RestauranteHelper restauranteHelper;
-    private final UsuarioHelper usuarioHelper;
     private final MesaHelper mesaHelper;
     private final ReservaRepository reservaRepository;
 
@@ -32,7 +32,7 @@ public class ReservarMesaUseCaseImpl implements ReservarMesaUseCase {
         Restaurante restaurante = restauranteHelper.validateRestauranteExists(reservaRequest.getRestauranteId());
 
         // Passo 2: Validar se o Usuário existe
-        Usuario usuario = usuarioHelper.validateUsuarioExists(reservaRequest.getUsuarioId());
+        Usuario usuario = usuarioValidator.validateUsuarioExists(reservaRequest.getUsuarioId());
 
         // Passo 3: Buscar as mesas disponíveis
         List<Mesa> mesasAReservar = mesaHelper.calculaMesasDisponiveisByRestaurante(

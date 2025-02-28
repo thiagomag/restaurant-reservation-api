@@ -1,4 +1,4 @@
-package br.com.postechfiap.restaurantreservationapi.utils;
+package br.com.postechfiap.restaurantreservationapi.validator;
 
 import br.com.postechfiap.restaurantreservationapi.entities.Usuario;
 import br.com.postechfiap.restaurantreservationapi.exception.usuario.UsuarioNotFoundException;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
-public class UsuarioHelper {
+public class UsuarioValidator {
 
     private final UsuarioRepository usuarioRepository;
 

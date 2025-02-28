@@ -22,8 +22,15 @@ public class ReservaHelper {
 
     public List<Reserva> getReservaByHoraMarcada
             (Long restauranteId, LocalDateTime inicioIntervalo, LocalDateTime fimIntervalo) {
-       return reservaRepository.findByRestauranteIdAndDataHoraReservaBetween(
+
+        List<Reserva> reservaList = reservaRepository.findByRestauranteIdAndDataHoraReservaBetween(
                 restauranteId, inicioIntervalo, fimIntervalo);
+
+        if (reservaList.isEmpty()) {
+            throw new ReservaNotFoundException();
+        }
+        return reservaList;
+
     }
 
 

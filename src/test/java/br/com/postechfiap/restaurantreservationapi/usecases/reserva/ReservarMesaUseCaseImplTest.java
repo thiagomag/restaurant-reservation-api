@@ -3,10 +3,11 @@ package br.com.postechfiap.restaurantreservationapi.usecases.reserva;
 import br.com.postechfiap.restaurantreservationapi.dto.reserva.ReservaRequest;
 import br.com.postechfiap.restaurantreservationapi.dto.reserva.ReservaResponse;
 import br.com.postechfiap.restaurantreservationapi.entities.*;
+import br.com.postechfiap.restaurantreservationapi.exception.mesa.MesaIndisponivelException;
 import br.com.postechfiap.restaurantreservationapi.interfaces.reserva.ReservaRepository;
 import br.com.postechfiap.restaurantreservationapi.utils.MesaHelper;
 import br.com.postechfiap.restaurantreservationapi.utils.RestauranteHelper;
-import br.com.postechfiap.restaurantreservationapi.utils.UsuarioHelper;
+import br.com.postechfiap.restaurantreservationapi.validator.UsuarioValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,7 +34,7 @@ class ReservarMesaUseCaseImplTest {
     private RestauranteHelper restauranteHelper;
 
     @Mock
-    private UsuarioHelper usuarioHelper;
+    private UsuarioValidator usuarioValidator;
 
     @Mock
     private MesaHelper mesaHelper;
@@ -75,7 +76,7 @@ class ReservarMesaUseCaseImplTest {
                 request.getDataHoraReserva(), 4);
 
         when(restauranteHelper.validateRestauranteExists(1L)).thenReturn(restaurante);
-        when(usuarioHelper.validateUsuarioExists(2L)).thenReturn(usuario);
+        when(usuarioValidator.validateUsuarioExists(2L)).thenReturn(usuario);
         when(mesaHelper.calculaMesasDisponiveisByRestaurante(1L,
                 4,
                 request.getDataHoraReserva()))
@@ -112,7 +113,7 @@ class ReservarMesaUseCaseImplTest {
     void deveLancarExcecao_SeUsuarioNaoExistir() {
         // Arrange
         when(restauranteHelper.validateRestauranteExists(1L)).thenReturn(restaurante);
-        when(usuarioHelper.validateUsuarioExists(2L)).thenThrow(new RuntimeException("Usuário não encontrado"));
+        when(usuarioValidator.validateUsuarioExists(2L)).thenThrow(new RuntimeException("Usuário não encontrado"));
 
         // Act & Assert
         assertThatThrownBy(() -> reservarMesaUseCase.execute(request))
@@ -124,15 +125,17 @@ class ReservarMesaUseCaseImplTest {
     void deveLancarExcecao_SeNaoHouverMesasDisponiveis() {
         // Arrange
         when(restauranteHelper.validateRestauranteExists(1L)).thenReturn(restaurante);
-        when(usuarioHelper.validateUsuarioExists(2L)).thenReturn(usuario);
+        when(usuarioValidator.validateUsuarioExists(2L)).thenReturn(usuario);
         when(mesaHelper.calculaMesasDisponiveisByRestaurante(
                 1L,
                 4, request.getDataHoraReserva()))
-                .thenReturn(Collections.emptyList());
+                .thenThrow(new MesaIndisponivelException("Não há mesas suficientes para acomodar "
+                        + request.getNumeroDePessoas() + " pessoas."));
 
         // Act & Assert
         assertThatThrownBy(() -> reservarMesaUseCase.execute(request))
                 .isInstanceOf(RuntimeException.class)
-                .hasMessageContaining("Não há mesas disponíveis");
+                .hasMessageContaining("Não há mesas suficientes para acomodar "
+                        + request.getNumeroDePessoas() + " pessoas.");
     }
 }
