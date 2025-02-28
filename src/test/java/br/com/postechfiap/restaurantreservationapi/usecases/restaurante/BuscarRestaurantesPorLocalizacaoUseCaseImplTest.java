@@ -71,8 +71,8 @@ class BuscarRestaurantesPorLocalizacaoUseCaseImplTest {
         when(restaurante.getCapacidade()).thenReturn(100);
 
         // Mockando o Endereco
-        when(restaurante.getEndereco()).thenReturn(endereco);
-        when(endereco.getNumero()).thenReturn(123);
+        lenient().when(restaurante.getEndereco()).thenReturn(endereco);
+        lenient().when(endereco.getNumero()).thenReturn(123);
 
         // Act
         List<RestauranteResponse> response = buscarRestaurantesPorLocalizacaoUseCase.execute(request);
@@ -119,8 +119,8 @@ class BuscarRestaurantesPorLocalizacaoUseCaseImplTest {
                 request.getEstado()))
                 .thenReturn(restaurantes);
 
-        when(endereco.getId()).thenReturn(1L); // Stub para getId()
-        when(restaurante.getEndereco()).thenReturn(endereco);
+        lenient().when(endereco.getId()).thenReturn(1L); // Stub para getId()
+        lenient().when(restaurante.getEndereco()).thenReturn(endereco);
 
         // Act
         buscarRestaurantesPorLocalizacaoUseCase.execute(request);

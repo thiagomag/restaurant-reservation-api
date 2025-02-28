@@ -104,12 +104,9 @@ class BuscarRestaurantesPorNomeUseCaseImplTest {
 
         // Arrange
         when(restauranteRepository.findByNomeContainingIgnoreCase(request.getNome())).thenReturn(List.of(restaurante));
-        when(restaurante.getEndereco()).thenReturn(endereco);
-        when(endereco.getId()).thenReturn(1L);
+        lenient().when(restaurante.getEndereco()).thenReturn(endereco);
+        lenient().when(endereco.getId()).thenReturn(1L);
 
-
-        doNothing().when(restauranteValidator).validateNome(request.getNome());
-        doNothing().when(restauranteValidator).validateNomeTamanho(request.getNome());
 
         // Act
         buscarRestaurantesPorNomeUseCase.execute(request);

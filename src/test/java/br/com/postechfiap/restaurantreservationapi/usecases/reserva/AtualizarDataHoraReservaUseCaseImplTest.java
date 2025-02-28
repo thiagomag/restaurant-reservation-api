@@ -76,12 +76,6 @@ class AtualizarDataHoraReservaUseCaseImplTest {
         request = new ReservaAtualizarDataHoraRequest(
                 1L, LocalDateTime.of(2024, 1, 5, 20, 0));
 
-        // As mesas agora são mocks
-        mesa1 = mock(Mesa.class);
-        mesa2 = mock(Mesa.class);
-        mesa3 = mock(Mesa.class);
-        mesa4 = mock(Mesa.class);
-
         // Listas de mesas
         mesas = new ArrayList<>(List.of(mesa1, mesa2));
         novasMesasDisponiveis = new ArrayList<>(List.of(mesa3, mesa4));
@@ -100,8 +94,13 @@ class AtualizarDataHoraReservaUseCaseImplTest {
                 4
         );
 
+        when(restaurante.getId()).thenReturn(1L);
+        // Mocks para as mesas
+        when(mesa3.getId()).thenReturn("001-003");
+        when(mesa4.getId()).thenReturn("001-004");
+
         // Mocks
-        when(reservaRepository.findById(1L)).thenReturn(Optional.of(reserva));
+        when(reservaHelper.getReservaById(request.getReservaId())).thenReturn(reserva);
         when(mesaHelper.calculaMesasDisponiveisByRestaurante(
                 reserva.getRestaurante().getId(),
                 reserva.getNumeroDePessoas(),
