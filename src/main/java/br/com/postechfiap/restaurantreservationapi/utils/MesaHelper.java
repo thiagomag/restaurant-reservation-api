@@ -4,7 +4,6 @@ import br.com.postechfiap.restaurantreservationapi.entities.Mesa;
 import br.com.postechfiap.restaurantreservationapi.entities.Reserva;
 import br.com.postechfiap.restaurantreservationapi.exception.mesa.MesaIndisponivelException;
 import br.com.postechfiap.restaurantreservationapi.interfaces.mesa.MesaRepository;
-import br.com.postechfiap.restaurantreservationapi.interfaces.reserva.ReservaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
