@@ -41,7 +41,7 @@ public class Reserva extends BaseEntity<Long> {
 
     private LocalDateTime dataHoraReserva;
 
-    // Quantidade de pessoas para a reserva
+    @Column(name = "numero_de_pessoas")
     private int numeroDePessoas;
 
 }

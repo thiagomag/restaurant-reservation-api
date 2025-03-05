@@ -22,7 +22,7 @@ CREATE TABLE restaurante (
 CREATE TABLE mesa (
     id VARCHAR(20) PRIMARY KEY,
     restaurante_id BIGINT,
-    numeroMesa INT,
+    numero_mesa INT,
     capacidade INT,
     FOREIGN KEY (restaurante_id) REFERENCES restaurante(id)
 );
@@ -39,7 +39,7 @@ CREATE TABLE reserva (
     usuario_id BIGINT,
     restaurante_id BIGINT,
     dataHoraReserva TIMESTAMP,
-    numeroDePessoas INT,
+    numero_de_pessoas INT,
     FOREIGN KEY (usuario_id) REFERENCES usuario(id),
     FOREIGN KEY (restaurante_id) REFERENCES restaurante(id)
 );
@@ -51,3 +51,4 @@ CREATE TABLE reserva_mesa (
     FOREIGN KEY (reserva_id) REFERENCES reserva(id),
     FOREIGN KEY (mesa_id) REFERENCES mesa(id)
 );
+
