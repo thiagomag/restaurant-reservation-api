@@ -47,6 +47,8 @@ public class ReservaResponse {
     public static ReservaResponse toDto(Reserva reserva) {
         return ReservaResponse.builder()
                 .reservaId(reserva.getId())
+                .usuarioId(reserva.getUsuario().getId())
+                .restauranteName(reserva.getRestaurante().getNome())
                 .mesas(reserva.getMesas().stream().map(Mesa::getId).collect(Collectors.toList())) // Lista de IDs de mesas
                 .dataHoraReserva(reserva.getDataHoraReserva())
                 .numeroDePessoas(reserva.getNumeroDePessoas())

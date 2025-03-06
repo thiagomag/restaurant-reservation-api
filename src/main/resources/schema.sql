@@ -1,3 +1,12 @@
+
+
+-- Criar sequências
+CREATE SEQUENCE IF NOT EXISTS endereco_id_seq START WITH 1;
+CREATE SEQUENCE IF NOT EXISTS restaurante_id_seq START WITH 1;
+CREATE SEQUENCE IF NOT EXISTS usuario_id_seq START WITH 1;
+CREATE SEQUENCE IF NOT EXISTS reserva_id_seq START WITH 1;
+CREATE SEQUENCE IF NOT EXISTS mesa_id_seq START WITH 1;
+
 -- Criação das tabelas
 CREATE TABLE endereco (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -13,7 +22,7 @@ CREATE TABLE restaurante (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(255),
     endereco_id BIGINT,
-    tipoCozinha VARCHAR(50),
+    tipo_cozinha VARCHAR(50),
     horarioFuncionamento VARCHAR(50),
     capacidade INT,
     FOREIGN KEY (endereco_id) REFERENCES endereco(id)
@@ -38,7 +47,7 @@ CREATE TABLE reserva (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     usuario_id BIGINT,
     restaurante_id BIGINT,
-    dataHoraReserva TIMESTAMP,
+    data_hora_reserva TIMESTAMP,
     numero_de_pessoas INT,
     FOREIGN KEY (usuario_id) REFERENCES usuario(id),
     FOREIGN KEY (restaurante_id) REFERENCES restaurante(id)

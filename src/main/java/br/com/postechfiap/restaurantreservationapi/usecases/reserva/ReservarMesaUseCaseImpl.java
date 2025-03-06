@@ -49,7 +49,6 @@ public class ReservarMesaUseCaseImpl implements ReservarMesaUseCase {
                 .usuario(usuario)
                 .dataHoraReserva(reservaRequest.getDataHoraReserva()).numeroDePessoas(reservaRequest.getNumeroDePessoas()).build();
 
-
         reserva = reservaRepository.save(reserva);
         // Passo 5: Retornar a resposta formatada
         return ReservaResponse.builder()

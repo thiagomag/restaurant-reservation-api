@@ -18,6 +18,7 @@ spring:
       mode: always  # Garante que os scripts sejam executados no início
       schema-locations: classpath:schema.sql
       data-locations: classpath:data.sql  # Para rodar o script de povoamento
+      clean-locations: classpath:clean.sql
   h2:
     console:
       enabled: true

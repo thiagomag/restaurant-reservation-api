@@ -5,7 +5,7 @@ INSERT INTO endereco (id, logradouro, numero, bairro, cidade, estado, cep) VALUE
 ( 3, 'Rua C', 300, 'Savassi', 'Belo Horizonte', 'MG', '30100-000');
 
 -- Inserindo restaurantes
-INSERT INTO restaurante (nome, endereco_id, tipoCozinha, horarioFuncionamento, capacidade) VALUES
+INSERT INTO restaurante (nome, endereco_id, tipo_cozinha, horarioFuncionamento, capacidade) VALUES
 ('Restaurante Sabor', 1, 'ITALIANA', '10:00 - 22:00', 50),
 ( 'Cantina da Esquina', 2, 'BRASILEIRA', '11:00 - 23:00', 40),
 ( 'Churrascaria Fogo Alto', 3, 'CHURRASCO', '12:00 - 23:00', 60);
@@ -27,7 +27,7 @@ INSERT INTO usuario ( nome, email, telefone) VALUES
 
 
 -- Inserindo reservas
-INSERT INTO reserva (usuario_id, restaurante_id, dataHoraReserva, numero_de_pessoas) VALUES
+INSERT INTO reserva (usuario_id, restaurante_id, data_hora_reserva, numero_de_pessoas) VALUES
 (1, 1, '2025-03-05 19:00:00', 2),
 (2, 2, '2025-03-06 20:30:00', 2),
 (3, 3, '2025-03-07 21:00:00', 2);
@@ -37,3 +37,6 @@ INSERT INTO reserva_mesa (reserva_id, mesa_id) VALUES
 (1, '001-001'), -- Usuário 1 reservou mesa 001-001 no Restaurante 1
 (2, '002-001'), -- Usuário 2 reservou mesa 002-002 no Restaurante 2
 (3, '003-001'); -- Usuário 3 reservou mesa 003-001 no Restaurante 3
+
+ALTER SEQUENCE reserva_id_seq RESTART WITH 4;
+ALTER SEQUENCE restaurante_id_seq RESTART WITH 4;
