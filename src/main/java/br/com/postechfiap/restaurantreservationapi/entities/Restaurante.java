@@ -32,6 +32,7 @@ public class Restaurante extends BaseEntity<Long> {
     @JoinColumn(name = "endereco_id")
     private Endereco endereco;
     @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_cozinha")
     private TiposCozinhaEnum tipoCozinha;
     private String horarioFuncionamento;
     private int capacidade;

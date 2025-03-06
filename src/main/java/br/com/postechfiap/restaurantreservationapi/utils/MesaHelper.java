@@ -3,6 +3,7 @@ package br.com.postechfiap.restaurantreservationapi.utils;
 import br.com.postechfiap.restaurantreservationapi.entities.Mesa;
 import br.com.postechfiap.restaurantreservationapi.entities.Reserva;
 import br.com.postechfiap.restaurantreservationapi.exception.mesa.MesaIndisponivelException;
+import br.com.postechfiap.restaurantreservationapi.exception.reserva.ReservaNotFoundException;
 import br.com.postechfiap.restaurantreservationapi.interfaces.mesa.MesaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -46,13 +47,16 @@ public class MesaHelper {
 
 
          // Passo 2: Buscar reservas para o restaurante dentro do intervalo de tempo
-        List<Reserva> reservasExistentes = reservaHelper.getReservaByHoraMarcada(
+        try{List<Reserva> reservasExistentes = reservaHelper.getReservaByHoraMarcada(
                 restauranteId, inicioIntervalo, fimIntervalo);
 
         // Passo 3: Filtrar as mesas que estão reservadas
         return reservasExistentes.stream()
                 .flatMap(reserva -> reserva.getMesas().stream())
                 .collect(Collectors.toSet());
+        } catch (ReservaNotFoundException e) {
+            return Collections.emptySet();
+        }
     }
 
 
@@ -66,7 +70,7 @@ public class MesaHelper {
         var mesasIndisponiveis = findMesasReservadasByRestaurante(restauranteId,dataHoraReserva);
 
         // Passo 3: Subtrair mesas reservadas das mesas totais para encontrar as mesas disponíveis
-        List<Mesa> mesasDisponiveis = mesasTotaisByRestaurante.stream()
+        List<Mesa> mesasDisponiveis = mesasIndisponiveis.isEmpty() ? mesasTotaisByRestaurante : mesasTotaisByRestaurante.stream()
                 .filter(mesa -> !mesasIndisponiveis.contains(mesa))
                 .toList();
 

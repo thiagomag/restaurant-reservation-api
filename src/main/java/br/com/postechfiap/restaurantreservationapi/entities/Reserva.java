@@ -39,9 +39,10 @@ public class Reserva extends BaseEntity<Long> {
     )
     private List<Mesa> mesas = new ArrayList<>();
 
+    @Column(name = "data_hora_reserva")
     private LocalDateTime dataHoraReserva;
 
-    // Quantidade de pessoas para a reserva
+    @Column(name = "numero_de_pessoas")
     private int numeroDePessoas;
 
 }

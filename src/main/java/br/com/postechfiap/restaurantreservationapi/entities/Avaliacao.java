@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @ToString
 @Table(name = "avaliacao")
 @Entity
+@NoArgsConstructor
 public class Avaliacao extends BaseEntity<Long> {
 
     @Id

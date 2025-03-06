@@ -24,6 +24,7 @@ public class Mesa extends BaseEntity<String> {
     @JoinColumn(name = "restaurante_id", nullable = false)
     private Restaurante restaurante;  // Relacionamento com a entidade Restaurante
 
+    @Column(name = "numero_mesa")
     private Integer numeroMesa;
 
     @Builder.Default

@@ -57,6 +57,6 @@ public enum TiposCozinhaEnum implements EnumSerializable {
 
     @Override
     public String getValue() {
-        return this.descricao;
+        return this.descricao.trim();
     }
 }
