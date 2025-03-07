@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @NoArgsConstructor
@@ -18,6 +19,7 @@ import lombok.*;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class ReservaCancelamentoRequest {
 
+    @NotNull
     @Schema(description = "ID da Reserva que está sendo cancelada", example = "5")
     private Long reservaId;
 }

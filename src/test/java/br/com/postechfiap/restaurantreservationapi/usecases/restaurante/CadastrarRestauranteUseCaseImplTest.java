@@ -1,8 +1,10 @@
 package br.com.postechfiap.restaurantreservationapi.usecases.restaurante;
 
 import br.com.postechfiap.restaurantreservationapi.adapters.endereco.EnderecoAdapter;
+import br.com.postechfiap.restaurantreservationapi.adapters.endereco.EnderecoResponseAdapter;
 import br.com.postechfiap.restaurantreservationapi.adapters.restaurante.RestauranteAdapter;
 import br.com.postechfiap.restaurantreservationapi.adapters.restaurante.RestauranteResponseAdapter;
+import br.com.postechfiap.restaurantreservationapi.interfaces.endereco.EnderecoRepository;
 import br.com.postechfiap.restaurantreservationapi.interfaces.restaurante.CadastrarRestauranteUseCase;
 import br.com.postechfiap.restaurantreservationapi.interfaces.restaurante.RestauranteRepository;
 import br.com.postechfiap.restaurantreservationapi.utils.RestauranteTestUtils;
@@ -21,6 +23,13 @@ public class CadastrarRestauranteUseCaseImplTest {
 
     @Mock
     private EnderecoAdapter enderecoAdapter;
+
+    @Mock
+    private EnderecoResponseAdapter enderecoResponseAdapter;
+
+    @Mock
+    private EnderecoRepository enderecoRepository;
+
     @Mock
     private RestauranteAdapter restauranteAdapter;
     @Mock
@@ -33,8 +42,8 @@ public class CadastrarRestauranteUseCaseImplTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        cadastrarRestauranteUseCase = new CadastrarRestauranteUseCaseImpl(enderecoAdapter, restauranteAdapter,
-                restauranteResponseAdapter, restauranteRepository);
+        cadastrarRestauranteUseCase = new CadastrarRestauranteUseCaseImpl(enderecoAdapter, enderecoResponseAdapter
+                ,enderecoRepository, restauranteAdapter, restauranteResponseAdapter, restauranteRepository);
     }
 
     @Test

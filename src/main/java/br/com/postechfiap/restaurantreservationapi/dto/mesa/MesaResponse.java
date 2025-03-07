@@ -10,7 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Builder
 public class MesaResponse {
 
-    @Schema(description = "Identificador único da mesa", example = "MESA-123")
+    @Schema(description = "Identificador único da mesa", example = "001-001")
     private String id;
 
     @Schema(description = "Número da mesa no restaurante", example = "10")

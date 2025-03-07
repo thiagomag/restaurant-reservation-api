@@ -45,6 +45,7 @@ public class RestauranteController {
 
         var response = buscarRestaurantesPorNomeUseCase.execute(dto);
 
+
         return ResponseEntity.ok(response);
     }
 

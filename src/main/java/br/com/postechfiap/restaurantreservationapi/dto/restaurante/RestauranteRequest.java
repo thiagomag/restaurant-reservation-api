@@ -46,5 +46,5 @@ public class RestauranteRequest {
 
     //@NotBlank(message = "A capacidade do restaurante é obrigatória")
     @Schema(description = "Capacidade total de pessoas do restaurante", example = "100", required = true)
-    private String capacidade;
+    private int capacidade;
 }

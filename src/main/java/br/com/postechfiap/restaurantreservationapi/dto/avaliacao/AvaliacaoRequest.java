@@ -29,6 +29,7 @@ public class AvaliacaoRequest {
 
     @Min(value = 1, message = "A nota deve ser no mínimo 1.")
     @Max(value = 5, message = "A nota deve ser no máximo 5.")
+    @NotNull
     @Schema(description = "Nota da avaliação (de 1 a 5)", example = "4")
     private Integer nota;    // Nota de 1 a 5
 
