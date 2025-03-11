@@ -27,6 +27,7 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @ActiveProfiles("test")
+@Transactional
 public class AtualizarDataHoraReservaUseCaseImplIT {
 
     @Autowired

@@ -37,7 +37,7 @@ public class BuscarRestaurantesPorLocalizacaoUseCaseImplIT {
     public void deveBuscarRestaurantesComSucesso() {
         // Arrange
         RestauranteBuscaLocalizacaoRequest request = new RestauranteBuscaLocalizacaoRequest
-                ("01000-000", "SP", "São Paulo", "Rua A");
+                ("01000-000", "SP", "Sao Paulo", "Rua A");
 
         // Act
         List<RestauranteResponse> response = buscarRestaurantesPorLocalizacaoUseCase.execute(request);

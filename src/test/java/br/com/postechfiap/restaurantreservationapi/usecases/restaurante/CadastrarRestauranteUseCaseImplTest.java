@@ -10,8 +10,11 @@ import br.com.postechfiap.restaurantreservationapi.interfaces.restaurante.Restau
 import br.com.postechfiap.restaurantreservationapi.utils.RestauranteTestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -19,6 +22,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
+@Transactional
 public class CadastrarRestauranteUseCaseImplTest {
 
     @Mock
@@ -52,6 +57,8 @@ public class CadastrarRestauranteUseCaseImplTest {
         final var restauranteRequest = RestauranteTestUtils.buildRestauranteRequest();
         final var restaurante = RestauranteTestUtils.buildRestaurante();
         final var restauranteResponse = RestauranteTestUtils.buildRestauranteResponse();
+
+
 
         when(enderecoAdapter.adapt(restauranteRequest.getEndereco()))
                 .thenReturn(restaurante.getEndereco());

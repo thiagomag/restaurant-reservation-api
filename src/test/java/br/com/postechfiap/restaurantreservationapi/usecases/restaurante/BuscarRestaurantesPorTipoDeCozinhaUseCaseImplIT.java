@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @SpringBootTest
 @ActiveProfiles("test")
 @Transactional
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class BuscarRestaurantesPorTipoDeCozinhaUseCaseImplIT {
 
     @Autowired
@@ -43,6 +45,7 @@ public class BuscarRestaurantesPorTipoDeCozinhaUseCaseImplIT {
 
         // Assert
         assertThat(response).isNotEmpty(); // Verifica que pelo menos um restaurante foi encontrado
+        System.out.println(response);
         assertThat(response.get(0).getTipoCozinha().getValue()).isEqualTo("Italiana");
     }
 

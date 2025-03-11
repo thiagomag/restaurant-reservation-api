@@ -12,7 +12,6 @@ import java.util.List;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false)
-@ToString
 @Builder(toBuilder = true)
 @Table(name = "reserva")
 @Entity
@@ -45,4 +44,12 @@ public class Reserva extends BaseEntity<Long> {
     @Column(name = "numero_de_pessoas")
     private int numeroDePessoas;
 
+    @Override
+    public String toString() {
+        return "Reserva{" +
+                "id=" + id +
+                ", usuario=" + usuario +
+                ", restaurante=" + restaurante +
+                '}';
+    }
 }

@@ -19,7 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.containsString;
@@ -27,6 +29,8 @@ import static org.hamcrest.Matchers.equalTo;
 
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Transactional
+@DirtiesContext
 class RestauranteControllerIT {
 
     @LocalServerPort
@@ -108,7 +112,7 @@ class RestauranteControllerIT {
                 .body("[0].tipo_cozinha", equalTo("ITALIANA")) // Ajustado para o nome correto do campo
                 .body("[0].endereco.logradouro", equalTo("Rua A"))
                 .body("[0].endereco.bairro", equalTo("Centro"))
-                .body("[0].endereco.cidade", equalTo("São Paulo"))
+                .body("[0].endereco.cidade", equalTo("Sao Paulo"))
                 .body("[0].endereco.estado", equalTo("SP"));
     }
 
@@ -131,7 +135,7 @@ class RestauranteControllerIT {
                 .body("[0].tipo_cozinha", equalTo("ITALIANA")) // Alterado para corresponder ao JSON retornado
                 .body("[0].endereco.logradouro", equalTo("Rua A"))
                 .body("[0].endereco.bairro", equalTo("Centro"))
-                .body("[0].endereco.cidade", equalTo("São Paulo"))
+                .body("[0].endereco.cidade", equalTo("Sao Paulo"))
                 .body("[0].endereco.estado", equalTo("SP"));
     }
 
@@ -141,7 +145,7 @@ class RestauranteControllerIT {
         RestauranteBuscaLocalizacaoRequest buscaLocalizacaoRequest = RestauranteBuscaLocalizacaoRequest.builder()
                 .cep("01000-000")
                 .estado("SP")
-                .cidade("São Paulo")
+                .cidade("Sao Paulo")
                 .logradouro("Rua A")
                 .build();
 

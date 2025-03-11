@@ -9,6 +9,7 @@ import br.com.postechfiap.restaurantreservationapi.interfaces.avaliacao.Avaliaca
 import br.com.postechfiap.restaurantreservationapi.interfaces.reserva.ReservaRepository;
 import br.com.postechfiap.restaurantreservationapi.utils.ReservaHelper;
 import br.com.postechfiap.restaurantreservationapi.validator.AvaliacaoValidator;
+import org.hibernate.annotations.processing.SQL;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -17,7 +18,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.boot.test.context.SpringBootTest;
 
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,6 +32,8 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
+@Transactional
+@DirtiesContext
 public class AvaliarReservaUseCaseImplIT {
 
     @Autowired
@@ -79,7 +86,7 @@ public class AvaliarReservaUseCaseImplIT {
         // ARRANGE
 
         // Criar um request válido para a primeira avaliação
-        AvaliacaoRequest requestPrimeiraAvaliacao = new AvaliacaoRequest(1L, 5, "Ótima experiência!");
+        AvaliacaoRequest requestPrimeiraAvaliacao = new AvaliacaoRequest(2L, 5, "Ótima experiência!");
 
         // ACT: Executar a primeira avaliação
         AvaliacaoResponse responsePrimeiraAvaliacao = avaliarReservaUseCase.execute(requestPrimeiraAvaliacao);
@@ -94,7 +101,7 @@ public class AvaliarReservaUseCaseImplIT {
         assertTrue(avaliacaoSalva.isPresent());
 
         // ARRANGE: Criar um request para a segunda tentativa de avaliação para a mesma reserva
-        AvaliacaoRequest requestSegundaAvaliacao = new AvaliacaoRequest(1L, 4, "Boa experiência!");
+        AvaliacaoRequest requestSegundaAvaliacao = new AvaliacaoRequest(2L, 4, "Boa experiência!");
 
         // Configurar o mock para lançar a exceção na segunda tentativa de avaliação usando doThrow
         doThrow(new ReservaJaAvaliadaException(1L)).when(avaliacaoValidator).validarSeReservaJaFoiAvaliada(anyLong());

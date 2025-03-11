@@ -1,8 +1,6 @@
 package br.com.postechfiap.restaurantreservationapi.usecases.restaurante;
 
-import br.com.postechfiap.restaurantreservationapi.dto.endereco.EnderecoResponse;
 import br.com.postechfiap.restaurantreservationapi.dto.restaurante.RestauranteResponse;
-import br.com.postechfiap.restaurantreservationapi.dto.restaurante.busca.RestauranteBuscaNomeRequest;
 import br.com.postechfiap.restaurantreservationapi.dto.restaurante.busca.RestauranteBuscaTipoCozinhaRequest;
 import br.com.postechfiap.restaurantreservationapi.entities.Endereco;
 import br.com.postechfiap.restaurantreservationapi.entities.Restaurante;
@@ -16,6 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
@@ -27,6 +26,7 @@ import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
+@Transactional
 class BuscarRestaurantesPorTipoDeCozinhaUseCaseImplTest {
 
     @InjectMocks

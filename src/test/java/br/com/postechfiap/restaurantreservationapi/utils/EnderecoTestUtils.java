@@ -11,7 +11,7 @@ public class EnderecoTestUtils {
                 .logradouro("Rua dos Bobos")
                 .numero(0)
                 .bairro("Vila do Chaves")
-                .cidade("São Paulo")
+                .cidade("Sao Paulo")
                 .estado("SP")
                 .cep("00000-000")
                 .build();
@@ -23,7 +23,7 @@ public class EnderecoTestUtils {
                 .logradouro("Rua dos Bobos")
                 .numero(0)
                 .bairro("Vila do Chaves")
-                .cidade("São Paulo")
+                .cidade("Sao Paulo")
                 .estado("SP")
                 .cep("00000-000")
                 .build();
@@ -35,7 +35,7 @@ public class EnderecoTestUtils {
                 .logradouro("Rua dos Bobos")
                 .numero(0)
                 .bairro("Vila do Chaves")
-                .cidade("São Paulo")
+                .cidade("Sao Paulo")
                 .estado("SP")
                 .cep("00000-000")
                 .build();

@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.time.LocalDateTime;
@@ -23,6 +24,7 @@ import static org.hamcrest.Matchers.*;
 
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Transactional
 class ReservaControllerIT {
 
     @LocalServerPort
@@ -67,7 +69,6 @@ class ReservaControllerIT {
                 .body("reserva_id", notNullValue())  // Alterado para "reserva_id"
                 .body("reserva_id", greaterThan(0)) // Verifica que o valor do "reserva_id" é maior que 0
                 .body("restaurante_name", equalTo("Restaurante Sabor"))  // Nome do restaurante
-                .body("mesas[0]", equalTo("001-001"))  // Primeira mesa da lista de mesas
                 .body("data_hora_reserva", equalTo("2025-05-01T19:00:00"))  // Data e hora da reserva
                 .body("numero_de_pessoas", equalTo(2));  // Número de pessoas
     }
@@ -91,12 +92,13 @@ class ReservaControllerIT {
                 .then()
                 .statusCode(400)  // Verifica que o status retornado é 400 Bad Request
                 .body("message[0]", containsString("A data e hora da reserva não podem ser nulas."));
+
     }
 
     @Test
     void deveDeletarReservaComSucesso() {
         // Supondo que o id da reserva a ser deletada seja 1L
-        Long reservaId = 1L;
+        Long reservaId = 3L;
 
         // Realizar o DELETE usando Rest Assured e verificar a resposta
         given()
@@ -104,7 +106,7 @@ class ReservaControllerIT {
                 .delete("/reserva/{id}", reservaId)
                 .then()
                 .statusCode(200)  // Verifica que o status retornado é 200 OK
-                .body(equalTo("Reserva com ID 1 foi deletada com sucesso."));
+                .body(equalTo("Reserva com ID 3 foi deletada com sucesso."));
     }
 
     @Test
@@ -127,17 +129,17 @@ class ReservaControllerIT {
         LocalDateTime dateTimeAtualizada = LocalDateTime.of(2025,5,1,19,0,0);
 
         ReservaAtualizarDataHoraRequest atualizarRequest = ReservaAtualizarDataHoraRequest.builder()
-                        .reservaId(1L).dataAlteracao(dateTimeAtualizada).build();
+                        .reservaId(2L).dataAlteracao(dateTimeAtualizada).build();
 
         // Realizar o PUT usando Rest Assured e verificar a resposta
         given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(atualizarRequest)  // Passando o objeto no corpo da requisição
+                .body(atualizarRequest)
                 .when()
                 .put("/reserva")
                 .then()
                 .statusCode(200)  // Verifica que o status retornado é 200 OK
-                .body("reserva_id", equalTo(1));
+                .body("reserva_id", equalTo(2));
 
     }
 

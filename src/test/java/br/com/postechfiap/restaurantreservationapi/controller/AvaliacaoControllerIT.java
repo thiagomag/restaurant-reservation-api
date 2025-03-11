@@ -10,8 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.transaction.annotation.Transactional;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.containsString;
@@ -20,6 +23,8 @@ import static org.hamcrest.Matchers.equalTo;
 
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Transactional
+@DirtiesContext
 class AvaliacaoControllerIT {
 
     @LocalServerPort
@@ -28,11 +33,18 @@ class AvaliacaoControllerIT {
     @Autowired
     ReservaRepository reservaRepository;
 
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
     @BeforeEach
     public void setup() {
         RestAssured.port = port;
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
+
+
+
     }
+
 
     @Test
     void deveCriarAvaliacaoComSucesso() {
@@ -41,6 +53,10 @@ class AvaliacaoControllerIT {
         avaliacaoRequest.setReservaId(1L);
         avaliacaoRequest.setNota(5);
         avaliacaoRequest.setComentario("Ótima reserva!");
+
+        var reserva = reservaRepository.findAll();
+
+        System.out.println("Reservaaaaaaaaaaaas" +reserva);
 
         // Realizar o POST usando Rest Assured e verificar a resposta
         given()

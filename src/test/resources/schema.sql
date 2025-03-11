@@ -1,11 +1,9 @@
-
-
 -- Criar sequências
 CREATE SEQUENCE IF NOT EXISTS endereco_id_seq START WITH 1;
 CREATE SEQUENCE IF NOT EXISTS restaurante_id_seq START WITH 1;
 CREATE SEQUENCE IF NOT EXISTS usuario_id_seq START WITH 1;
 CREATE SEQUENCE IF NOT EXISTS reserva_id_seq START WITH 1;
-CREATE SEQUENCE IF NOT EXISTS mesa_id_seq START WITH 1;
+
 
 -- Criação das tabelas
 CREATE TABLE endereco (
@@ -29,7 +27,7 @@ CREATE TABLE restaurante (
 );
 
 CREATE TABLE mesa (
-    id VARCHAR(20) PRIMARY KEY,
+    id VARCHAR(7) PRIMARY KEY,
     restaurante_id BIGINT,
     numero_mesa INT,
     capacidade INT,
@@ -60,4 +58,13 @@ CREATE TABLE reserva_mesa (
     FOREIGN KEY (reserva_id) REFERENCES reserva(id),
     FOREIGN KEY (mesa_id) REFERENCES mesa(id)
 );
+
+CREATE TABLE avaliacao (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    reserva_id BIGINT UNIQUE,
+    nota INT,
+    comentario VARCHAR(255),
+    FOREIGN KEY (reserva_id) REFERENCES reserva(id)
+);
+
 

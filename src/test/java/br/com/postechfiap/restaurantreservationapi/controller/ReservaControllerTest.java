@@ -9,7 +9,6 @@ import br.com.postechfiap.restaurantreservationapi.interfaces.reserva.AtualizarD
 import br.com.postechfiap.restaurantreservationapi.interfaces.reserva.CancelarReservaUseCase;
 import br.com.postechfiap.restaurantreservationapi.interfaces.reserva.ReservarMesaUseCase;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,13 +17,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
+
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -33,7 +31,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-
+@Transactional
 class ReservaControllerTest {
 
     private MockMvc mockMvc;
@@ -129,14 +127,11 @@ class ReservaControllerTest {
     }
 
     @Test
-    void deveAtualizarReservaComSucesso() throws Exception {
+    void deveAtualizarDataHoraReservaComSucesso() throws Exception {
 
         // Criar objetos de teste
-        final var request = ReservaRequest.builder()
-                .restauranteId(1L)
-                .usuarioId(1L)
-                .dataHoraReserva(dateTime)
-                .numeroDePessoas(2).build();
+        final var request = ReservaAtualizarDataHoraRequest.builder()
+                .reservaId(1L).dataAlteracao(dateTime).build();
 
         var reservaAtualizada = ReservaResponse.builder()
                 .reservaId(1L)
