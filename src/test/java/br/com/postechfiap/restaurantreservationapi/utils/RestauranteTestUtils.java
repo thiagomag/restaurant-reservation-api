@@ -29,14 +29,14 @@ public class RestauranteTestUtils {
     }
 
     public static RestauranteResponse buildRestauranteResponse() {
-        return RestauranteResponse.builder()
-                .id(1L)
-                .nome("Restaurante Teste")
-                .tipoCozinha(TiposCozinhaEnum.BAIANA)
-                .horarioFuncionamento("10:00 - 22:00")
-                .capacidade(100)
-                .endereco(EnderecoTestUtils.buildEnderecoResponse())
-                .build();
+        final var restauranteResponse = new RestauranteResponse();
+        restauranteResponse.setId(1L);
+        restauranteResponse.setNome("Restaurante Teste");
+        restauranteResponse.setTipoCozinha(TiposCozinhaEnum.BAIANA);
+        restauranteResponse.setHorarioFuncionamento("10:00 - 22:00");
+        restauranteResponse.setCapacidade(100);
+        restauranteResponse.setEndereco(EnderecoTestUtils.buildEnderecoResponse());
+        return restauranteResponse;
     }
 
 }
