@@ -3,7 +3,7 @@ name: CI Pipeline with Dockerfile
 on:
   push:
     branches:
-      - main  # Build automático ao enviar código para a branch "master"
+      - master  # Build automático ao enviar código para a branch "master"
   workflow_dispatch:  # Deploy manual
 
 jobs:
