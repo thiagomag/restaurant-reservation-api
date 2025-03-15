@@ -3,8 +3,6 @@ package br.com.postechfiap.restaurantreservationapi.controller;
 import br.com.postechfiap.restaurantreservationapi.dto.restaurante.RestauranteRequest;
 import br.com.postechfiap.restaurantreservationapi.dto.restaurante.RestauranteResponse;
 import br.com.postechfiap.restaurantreservationapi.dto.restaurante.busca.RestauranteBuscaLocalizacaoRequest;
-import br.com.postechfiap.restaurantreservationapi.dto.restaurante.busca.RestauranteBuscaNomeRequest;
-import br.com.postechfiap.restaurantreservationapi.dto.restaurante.busca.RestauranteBuscaTipoCozinhaRequest;
 import br.com.postechfiap.restaurantreservationapi.enuns.TiposCozinhaEnum;
 import br.com.postechfiap.restaurantreservationapi.exception.GlobalExceptionHandler;
 import br.com.postechfiap.restaurantreservationapi.exception.reserva.ReservaNotFoundException;
@@ -17,11 +15,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -31,6 +27,7 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -95,46 +92,37 @@ class RestauranteControllerTest {
     @Test
     void deveBuscarRestaurantePorNomeComSucesso() throws Exception {
         // Criar objetos de teste
-        final var request = new RestauranteBuscaNomeRequest("Exemplo");
         final var response = List.of(new RestauranteResponse(1L, "Restaurante Exemplo",
                 null, TiposCozinhaEnum.AMAZONICA,"11:00 - 22:00",10));
 
         // Configurar comportamento do mock
-        when(buscarRestaurantesPorNomeUseCase.execute(any(RestauranteBuscaNomeRequest.class)))
+        when(buscarRestaurantesPorNomeUseCase.execute(anyString()))
                 .thenReturn(response);
 
-        // Converter o objeto para JSON
-        final var requestJson = new ObjectMapper().writeValueAsString(request);
-
         // Simular a requisição POST
-        mockMvc.perform(post("/restaurante/findByName")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestJson))
+        mockMvc.perform(get("/restaurante/findByName?name=Restaurante Exemplo")
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(1L))
                 .andExpect(jsonPath("$[0].nome").value("Restaurante Exemplo"));
 
-        verify(buscarRestaurantesPorNomeUseCase, times(1)).execute(any(RestauranteBuscaNomeRequest.class));
+        verify(buscarRestaurantesPorNomeUseCase, times(1)).execute(anyString());
     }
     @Test
     void deveBuscarRestaurantePorTipoCozinhaComSucesso() throws Exception {
-        final var request = new RestauranteBuscaTipoCozinhaRequest(TiposCozinhaEnum.ITALIANA);
         final var response = List.of(new RestauranteResponse(2L, "Pizzaria Roma",
                 null, TiposCozinhaEnum.ITALIANA,"11:00 - 22:00",10));
 
-        when(buscarRestaurantesPorTipoDeCozinhaUseCase.execute(any(RestauranteBuscaTipoCozinhaRequest.class)))
+        when(buscarRestaurantesPorTipoDeCozinhaUseCase.execute(anyString()))
                 .thenReturn(response);
 
-        final var requestJson = new ObjectMapper().writeValueAsString(request);
-
-        mockMvc.perform(post("/restaurante/findByTipoCozinha")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestJson))
+        mockMvc.perform(get("/restaurante/findByTipoCozinha?tipoCozinha=Italiana")
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(2L))
                 .andExpect(jsonPath("$[0].nome").value("Pizzaria Roma"));
 
-        verify(buscarRestaurantesPorTipoDeCozinhaUseCase, times(1)).execute(any(RestauranteBuscaTipoCozinhaRequest.class));
+        verify(buscarRestaurantesPorTipoDeCozinhaUseCase, times(1)).execute(anyString());
     }
 
     @Test
@@ -177,35 +165,22 @@ class RestauranteControllerTest {
 
 
     @Test
-    @DisplayName("Deve falhar ao cadastrar restaurante sem nome")
+    @DisplayName("Deve falhar ao buscar restaurante sem nome")
     void deveFalharAoBuscarRestauranteSemNome() throws Exception {
-        final var request = RestauranteBuscaNomeRequest.builder().nome("").build();
-        final var requestJson = new ObjectMapper().writeValueAsString(request);
-
-        // Configurar comportamento do mock
-        doThrow(new IllegalArgumentException("O nome do restaurante não pode ser vazio ou nulo"))
-                .when(buscarRestaurantesPorNomeUseCase).execute(any(RestauranteBuscaNomeRequest.class));
-
-        mockMvc.perform(post("/restaurante/findByName")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestJson))
-                .andExpect(status().isBadRequest());
+        mockMvc.perform(get("/restaurante/findByName")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is5xxServerError());
     }
 
     @Test
     @DisplayName("Deve falhar ao buscar restaurante por nome quando nenhum for encontrado")
     void deveFalharAoBuscarRestaurantePorNomeQuandoNenhumForEncontrado() throws Exception {
-        final var request = new RestauranteBuscaNomeRequest("Inexistente");
-
         // Configurar comportamento do mock
         doThrow(new ReservaNotFoundException())
-                .when(buscarRestaurantesPorNomeUseCase).execute(any(RestauranteBuscaNomeRequest.class));
+                .when(buscarRestaurantesPorNomeUseCase).execute(anyString());
 
-        final var requestJson = new ObjectMapper().writeValueAsString(request);
-
-        mockMvc.perform(post("/restaurante/findByName")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestJson))
+        mockMvc.perform(get("/restaurante/findByName?name=Inexistente")
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
@@ -213,17 +188,12 @@ class RestauranteControllerTest {
     @Test
     @DisplayName("Deve falhar ao buscar restaurante por tipo de cozinha quando nenhum for encontrado")
     void deveFalharAoBuscarRestaurantePorTipoDeCozinhaQuandoNenhumForEncontrado() throws Exception {
-        final var request = new RestauranteBuscaTipoCozinhaRequest(TiposCozinhaEnum.ITALIANA);
-
         // Configurar comportamento do mock para o use case de busca por tipo de cozinha
         doThrow(new RestauranteNotFoundException())
-                .when(buscarRestaurantesPorTipoDeCozinhaUseCase).execute(any(RestauranteBuscaTipoCozinhaRequest.class));
+                .when(buscarRestaurantesPorTipoDeCozinhaUseCase).execute(anyString());
 
-        final var requestJson = new ObjectMapper().writeValueAsString(request);
-
-        mockMvc.perform(post("/restaurante/findByTipoCozinha")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestJson))
+        mockMvc.perform(get("/restaurante/findByTipoCozinha?tipoCozinha=qlqr")
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 

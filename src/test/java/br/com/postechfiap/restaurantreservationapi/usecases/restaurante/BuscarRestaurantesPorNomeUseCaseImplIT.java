@@ -1,7 +1,6 @@
 package br.com.postechfiap.restaurantreservationapi.usecases.restaurante;
 
 import br.com.postechfiap.restaurantreservationapi.dto.restaurante.RestauranteResponse;
-import br.com.postechfiap.restaurantreservationapi.dto.restaurante.busca.RestauranteBuscaNomeRequest;
 import br.com.postechfiap.restaurantreservationapi.exception.restaurante.RestauranteNotFoundException;
 import br.com.postechfiap.restaurantreservationapi.interfaces.restaurante.RestauranteRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,50 +33,24 @@ public class BuscarRestaurantesPorNomeUseCaseImplIT {
     @Test
     public void deveBuscarRestaurantesComSucesso() {
         // Arrange
-        RestauranteBuscaNomeRequest request = new RestauranteBuscaNomeRequest("Sabor");
+        final var nome = "Sabor";
 
         // Act
-        List<RestauranteResponse> response = buscarRestaurantesPorNomeUseCase.execute(request);
+        List<RestauranteResponse> response = buscarRestaurantesPorNomeUseCase.execute(nome);
 
         // Assert
         assertThat(response).isNotEmpty();
-        assertThat(response.get(0).getNome()).isEqualTo("Restaurante Sabor");
-    }
-
-    @Test
-    public void deveLancarErroQuandoNomeForInvalido() {
-        // Arrange
-        RestauranteBuscaNomeRequest requestInvalido = new RestauranteBuscaNomeRequest("R");
-
-        // Act & Assert
-        assertThatThrownBy(() -> buscarRestaurantesPorNomeUseCase.execute(requestInvalido))
-                .isInstanceOf(IllegalArgumentException.class) // Supondo que a validação gere uma IllegalArgumentException
-                .hasMessageContaining("O nome do restaurante deve ter pelo menos 3 caracteres");
-    }
-
-    @Test
-    public void deveLancarErroQuandoInputForVazioOuNulo() {
-        // Arrange
-        RestauranteBuscaNomeRequest requestInexistente = new RestauranteBuscaNomeRequest("");
-
-        // Act & Assert
-        assertThatThrownBy(() -> buscarRestaurantesPorNomeUseCase.execute(requestInexistente))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("O nome do restaurante não pode ser vazio ou nulo");
+        assertThat(response.getFirst().getNome()).isEqualTo("Restaurante Sabor");
     }
 
     @Test
     public void deveLancarErroQuandoRestauranteNaoExistir() {
         // Arrange
-        RestauranteBuscaNomeRequest requestInexistente = new RestauranteBuscaNomeRequest("Restaurante Saboroso");
+        final var nome ="Restaurante Saboroso";
 
         // Act & Assert
-        assertThatThrownBy(() -> buscarRestaurantesPorNomeUseCase.execute(requestInexistente))
+        assertThatThrownBy(() -> buscarRestaurantesPorNomeUseCase.execute(nome))
                 .isInstanceOf(RestauranteNotFoundException.class)
                 .hasMessageContaining("Restaurante não encontrado.");
     }
-
-
-
-
 }

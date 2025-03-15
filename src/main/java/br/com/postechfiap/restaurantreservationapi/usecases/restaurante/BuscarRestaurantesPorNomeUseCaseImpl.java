@@ -1,7 +1,6 @@
 package br.com.postechfiap.restaurantreservationapi.usecases.restaurante;
 
 import br.com.postechfiap.restaurantreservationapi.dto.restaurante.RestauranteResponse;
-import br.com.postechfiap.restaurantreservationapi.dto.restaurante.busca.RestauranteBuscaNomeRequest;
 import br.com.postechfiap.restaurantreservationapi.entities.Restaurante;
 import br.com.postechfiap.restaurantreservationapi.exception.restaurante.RestauranteNotFoundException;
 import br.com.postechfiap.restaurantreservationapi.interfaces.restaurante.BuscarRestaurantesPorNomeUseCase;
@@ -22,14 +21,14 @@ public class BuscarRestaurantesPorNomeUseCaseImpl implements BuscarRestaurantesP
     private final RestauranteValidator restauranteValidator;
 
     @Override
-    public List<RestauranteResponse> execute(RestauranteBuscaNomeRequest dto) {
+    public List<RestauranteResponse> execute(String nome) {
 
         // 1. Validação do nome
-        restauranteValidator.validateNome(dto.getNome());
-        restauranteValidator.validateNomeTamanho(dto.getNome());
+        restauranteValidator.validateNome(nome);
+        restauranteValidator.validateNomeTamanho(nome);
 
         // 2. Busca no repositório por nome (contém o nome, ignorando maiúsculas/minúsculas)
-        List<Restaurante> restaurantes = restauranteRepository.findByNomeContainingIgnoreCase(dto.getNome());
+        List<Restaurante> restaurantes = restauranteRepository.findByNomeContainingIgnoreCase(nome);
 
         // 3. Se nenhum restaurante for encontrado, lança uma exceção
         if (restaurantes.isEmpty()) {

@@ -1,7 +1,6 @@
 package br.com.postechfiap.restaurantreservationapi.usecases.restaurante;
 
 import br.com.postechfiap.restaurantreservationapi.dto.restaurante.RestauranteResponse;
-import br.com.postechfiap.restaurantreservationapi.dto.restaurante.busca.RestauranteBuscaTipoCozinhaRequest;
 import br.com.postechfiap.restaurantreservationapi.entities.Endereco;
 import br.com.postechfiap.restaurantreservationapi.entities.Restaurante;
 import br.com.postechfiap.restaurantreservationapi.enuns.TiposCozinhaEnum;
@@ -44,11 +43,13 @@ class BuscarRestaurantesPorTipoDeCozinhaUseCaseImplTest {
     @Mock
     private Endereco endereco;
 
-    private RestauranteBuscaTipoCozinhaRequest request;
+    private TiposCozinhaEnum tipoCozinhaEnum;
+
+    private static final String tipoCozinha = "Italiana";
 
     @BeforeEach
     void setUp() {
-        request = new RestauranteBuscaTipoCozinhaRequest(TiposCozinhaEnum.ITALIANA);
+        tipoCozinhaEnum = TiposCozinhaEnum.findBy(tipoCozinha);
     }
 
     @Test
@@ -57,9 +58,9 @@ class BuscarRestaurantesPorTipoDeCozinhaUseCaseImplTest {
         // Arrange
         List<Restaurante> restaurantes = List.of(restaurante);
 
-        doNothing().when(restauranteValidator).validateTipoCozinha(request.getTipoCozinha());
+        doNothing().when(restauranteValidator).validateTipoCozinha(tipoCozinhaEnum);
 
-        when(restauranteRepository.findByTipoCozinha(request.getTipoCozinha()))
+        when(restauranteRepository.findByTipoCozinha(tipoCozinhaEnum))
                 .thenReturn(restaurantes);
 
         lenient().when(restaurante.getId()).thenReturn(1L);
@@ -75,9 +76,9 @@ class BuscarRestaurantesPorTipoDeCozinhaUseCaseImplTest {
         lenient().when(endereco.getNumero()).thenReturn(123);
 
         // Act
-        List<RestauranteResponse> response = buscarRestaurantesPorTipoDeCozinhaUseCase.execute(request);
+        List<RestauranteResponse> response = buscarRestaurantesPorTipoDeCozinhaUseCase.execute(tipoCozinha);
 
-        RestauranteResponse restauranteResponse = response.get(0);
+        RestauranteResponse restauranteResponse = response.getFirst();
 
         // Assert
         assertThat(response).hasSize(1);
@@ -86,42 +87,43 @@ class BuscarRestaurantesPorTipoDeCozinhaUseCaseImplTest {
         assertThat(restauranteResponse.getHorarioFuncionamento()).isEqualTo("10:00 - 22:00");
         assertThat(restauranteResponse.getCapacidade()).isEqualTo(100);
 
-        verify(restauranteValidator).validateTipoCozinha(request.getTipoCozinha());
-        verify(restauranteRepository).findByTipoCozinha(request.getTipoCozinha());
+        verify(restauranteValidator).validateTipoCozinha(tipoCozinhaEnum);
+        verify(restauranteRepository).findByTipoCozinha(tipoCozinhaEnum);
     }
 
     @Test
     void deveLancarExcecaoQuandoNenhumRestauranteForEncontrado() {
 
         // Arrange
-        doNothing().when(restauranteValidator).validateTipoCozinha(request.getTipoCozinha());
+        doNothing().when(restauranteValidator).validateTipoCozinha(tipoCozinhaEnum);
 
-        when(restauranteRepository.findByTipoCozinha(request.getTipoCozinha()))
+        when(restauranteRepository.findByTipoCozinha(tipoCozinhaEnum))
                 .thenReturn(Collections.emptyList());
 
         // Act & Assert
-        assertThatThrownBy(() -> buscarRestaurantesPorTipoDeCozinhaUseCase.execute(request))
+        assertThatThrownBy(() -> buscarRestaurantesPorTipoDeCozinhaUseCase.execute(tipoCozinha))
                 .isInstanceOf(RestauranteNotFoundException.class)
                 .hasMessageContaining("Restaurante não encontrado.");
 
-        verify(restauranteValidator).validateTipoCozinha(request.getTipoCozinha());
-        verify(restauranteRepository).findByTipoCozinha(request.getTipoCozinha());
+        verify(restauranteValidator).validateTipoCozinha(tipoCozinhaEnum);
+        verify(restauranteRepository).findByTipoCozinha(tipoCozinhaEnum);
     }
 
     @Test
     void deveLancarExcecaoQuandoTipoDeCozinhaForNulo() {
         // Arrange
-        RestauranteBuscaTipoCozinhaRequest nullRequest = new RestauranteBuscaTipoCozinhaRequest(null);
+        final var tipoCozinha = "Qlqr coisa";
+        tipoCozinhaEnum = TiposCozinhaEnum.findBy(tipoCozinha);
 
         doThrow(new IllegalArgumentException("O tipo de cozinha não pode ser nulo."))
-                .when(restauranteValidator).validateTipoCozinha(nullRequest.getTipoCozinha());
+                .when(restauranteValidator).validateTipoCozinha(tipoCozinhaEnum);
 
         // Act & Assert
-        assertThatThrownBy(() -> buscarRestaurantesPorTipoDeCozinhaUseCase.execute(nullRequest))
+        assertThatThrownBy(() -> buscarRestaurantesPorTipoDeCozinhaUseCase.execute(tipoCozinha))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("O tipo de cozinha não pode ser nulo.");
 
-        verify(restauranteValidator).validateTipoCozinha(nullRequest.getTipoCozinha());
+        verify(restauranteValidator).validateTipoCozinha(tipoCozinhaEnum);
         verifyNoInteractions(restauranteRepository);
     }
 

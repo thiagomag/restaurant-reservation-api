@@ -1,8 +1,6 @@
 package br.com.postechfiap.restaurantreservationapi.usecases.restaurante;
 
 import br.com.postechfiap.restaurantreservationapi.dto.restaurante.RestauranteResponse;
-import br.com.postechfiap.restaurantreservationapi.dto.restaurante.busca.RestauranteBuscaTipoCozinhaRequest;
-import br.com.postechfiap.restaurantreservationapi.enuns.TiposCozinhaEnum;
 import br.com.postechfiap.restaurantreservationapi.exception.restaurante.RestauranteNotFoundException;
 import br.com.postechfiap.restaurantreservationapi.interfaces.restaurante.RestauranteRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,24 +36,24 @@ public class BuscarRestaurantesPorTipoDeCozinhaUseCaseImplIT {
     @Test
     public void deveBuscarRestaurantesPorTipoDeCozinhaComSucesso() {
         // Arrange
-        RestauranteBuscaTipoCozinhaRequest request = new RestauranteBuscaTipoCozinhaRequest(TiposCozinhaEnum.ITALIANA);
+        final var tipoCozinha = "Italiana";
 
         // Act
-        List<RestauranteResponse> response = buscarRestaurantesPorTipoDeCozinhaUseCase.execute(request);
+        List<RestauranteResponse> response = buscarRestaurantesPorTipoDeCozinhaUseCase.execute(tipoCozinha);
 
         // Assert
         assertThat(response).isNotEmpty(); // Verifica que pelo menos um restaurante foi encontrado
         System.out.println(response);
-        assertThat(response.get(0).getTipoCozinha().getValue()).isEqualTo("Italiana");
+        assertThat(response.getFirst().getTipoCozinha().getValue()).isEqualTo("Italiana");
     }
 
     @Test
     public void deveLancarErroQuandoTipoDeCozinhaForNuloOuVazio() {
         // Arrange
-        RestauranteBuscaTipoCozinhaRequest requestNulo = new RestauranteBuscaTipoCozinhaRequest(null);
+        final var tipoCozinha = "Qlqr coisa";
 
         // Act & Assert
-        assertThatThrownBy(() -> buscarRestaurantesPorTipoDeCozinhaUseCase.execute(requestNulo))
+        assertThatThrownBy(() -> buscarRestaurantesPorTipoDeCozinhaUseCase.execute(tipoCozinha))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("O tipo de cozinha não pode ser nulo.");
     }
@@ -63,11 +61,10 @@ public class BuscarRestaurantesPorTipoDeCozinhaUseCaseImplIT {
     @Test
     public void deveLancarErroQuandoNenhumRestauranteForEncontrado() {
         // Arrange
-        RestauranteBuscaTipoCozinhaRequest requestNaoEncontrado =
-                new RestauranteBuscaTipoCozinhaRequest(TiposCozinhaEnum.CHINESA);
+        final var tipoCozinha = "chinesa";
 
         // Act & Assert
-        assertThatThrownBy(() -> buscarRestaurantesPorTipoDeCozinhaUseCase.execute(requestNaoEncontrado))
+        assertThatThrownBy(() -> buscarRestaurantesPorTipoDeCozinhaUseCase.execute(tipoCozinha))
                 .isInstanceOf(RestauranteNotFoundException.class)
                 .hasMessageContaining("Restaurante não encontrado.");
     }

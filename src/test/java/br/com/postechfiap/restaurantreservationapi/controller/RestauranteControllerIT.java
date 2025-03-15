@@ -3,8 +3,6 @@ package br.com.postechfiap.restaurantreservationapi.controller;
 import br.com.postechfiap.restaurantreservationapi.dto.endereco.EnderecoRequest;
 import br.com.postechfiap.restaurantreservationapi.dto.restaurante.RestauranteRequest;
 import br.com.postechfiap.restaurantreservationapi.dto.restaurante.busca.RestauranteBuscaLocalizacaoRequest;
-import br.com.postechfiap.restaurantreservationapi.dto.restaurante.busca.RestauranteBuscaNomeRequest;
-import br.com.postechfiap.restaurantreservationapi.dto.restaurante.busca.RestauranteBuscaTipoCozinhaRequest;
 import br.com.postechfiap.restaurantreservationapi.entities.Endereco;
 import br.com.postechfiap.restaurantreservationapi.enuns.TiposCozinhaEnum;
 import br.com.postechfiap.restaurantreservationapi.interfaces.restaurante.BuscarRestaurantesPorLocalizacaoUseCase;
@@ -95,17 +93,11 @@ class RestauranteControllerIT {
 
     @Test
     void deveBuscarRestaurantesPorNomeComSucesso() {
-        // Criar um objeto de request válido (RestauranteBuscaNomeRequest)
-        RestauranteBuscaNomeRequest buscaNomeRequest = RestauranteBuscaNomeRequest.builder()
-                .nome("Sabor")
-                .build();
-
-        // Realizar o POST usando Rest Assured e verificar a resposta
+        // Realizar o GET usando Rest Assured e verificar a resposta
         given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(buscaNomeRequest)
                 .when()
-                .post("/restaurante/findByName")
+                .get("/restaurante/findByName?name=Restaurante Sabor")
                 .then()
                 .statusCode(200)  // Verifica que o status retornado é 200 OK
                 .body("[0].nome", equalTo("Restaurante Sabor"))
@@ -118,17 +110,11 @@ class RestauranteControllerIT {
 
     @Test
     void deveBuscarRestaurantesPorTipoDeCozinhaComSucesso() {
-        // Criar um objeto de request válido (RestauranteBuscaTipoCozinhaRequest)
-        RestauranteBuscaTipoCozinhaRequest buscaTipoCozinhaRequest = RestauranteBuscaTipoCozinhaRequest.builder()
-                .tipoCozinha(TiposCozinhaEnum.ITALIANA)
-                .build();
-
-        // Realizar o POST usando Rest Assured e verificar a resposta
+        // Realizar o GET usando Rest Assured e verificar a resposta
         given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(buscaTipoCozinhaRequest)
                 .when()
-                .post("/restaurante/findByTipoCozinha")
+                .get("/restaurante/findByTipoCozinha?tipoCozinha=Italiana")
                 .then()
                 .statusCode(200)  // Verifica que o status retornado é 200 OK
                 .body("[0].nome", equalTo("Restaurante Sabor"))
@@ -165,19 +151,14 @@ class RestauranteControllerIT {
 
     @Test
     void deveRetornarErroQuandoBuscarRestaurantePorNomeComDadosInvalidos() {
-        // Criar um objeto de request inválido (nome nulo)
-        RestauranteBuscaNomeRequest buscaNomeRequest = RestauranteBuscaNomeRequest.builder()
-                .nome(null)
-                .build();
 
         // Realizar o POST e verificar o erro
         given()
                 .contentType(ContentType.JSON)
-                .body(buscaNomeRequest)
                 .when()
-                .post("/restaurante/findByName")
+                .get("/restaurante/findByName")
                 .then()
-                .statusCode(400)  // Verifica que o status retornado é 400 Bad Request
-                .body("message[0]", containsString("O nome do restaurante é obrigatório")); // Mensagem corrigida
+                .statusCode(500)  // Verifica que o status retornado é 500 Internal Server Error
+                .body("message[0]", containsString("Required request parameter 'name' for method parameter type String is not present")); // Mensagem corrigida
     }
 }

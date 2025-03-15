@@ -3,8 +3,6 @@ package br.com.postechfiap.restaurantreservationapi.controller;
 import br.com.postechfiap.restaurantreservationapi.dto.restaurante.RestauranteRequest;
 import br.com.postechfiap.restaurantreservationapi.dto.restaurante.RestauranteResponse;
 import br.com.postechfiap.restaurantreservationapi.dto.restaurante.busca.RestauranteBuscaLocalizacaoRequest;
-import br.com.postechfiap.restaurantreservationapi.dto.restaurante.busca.RestauranteBuscaNomeRequest;
-import br.com.postechfiap.restaurantreservationapi.dto.restaurante.busca.RestauranteBuscaTipoCozinhaRequest;
 import br.com.postechfiap.restaurantreservationapi.interfaces.restaurante.BuscarRestaurantesPorLocalizacaoUseCase;
 import br.com.postechfiap.restaurantreservationapi.interfaces.restaurante.BuscarRestaurantesPorNomeUseCase;
 import br.com.postechfiap.restaurantreservationapi.interfaces.restaurante.BuscarRestaurantesPorTipoDeCozinhaUseCase;
@@ -34,40 +32,29 @@ public class RestauranteController {
     @PostMapping
     @Operation(summary = "Cadastrar Restaurante", description = "Cadastra um novo restaurante.")
     public RestauranteResponse cadastrarRestaurante(@RequestBody @Valid RestauranteRequest dto) {
-        final var response = cadastrarRestauranteUseCase.execute(dto);
-        return response;
+        return cadastrarRestauranteUseCase.execute(dto);
     }
 
-    @PostMapping("/findByName")
+    @GetMapping("/findByName")
     @Operation(summary = "Buscar Restaurantes por Nome", description = "Busca restaurante por nome.")
-    public ResponseEntity<List<RestauranteResponse>> buscarRestaurantePorNome
-            (@RequestBody @Valid RestauranteBuscaNomeRequest dto) {
-
-        var response = buscarRestaurantesPorNomeUseCase.execute(dto);
-
-
+    public ResponseEntity<List<RestauranteResponse>> buscarRestaurantePorNome(@RequestParam String name) {
+        var response = buscarRestaurantesPorNomeUseCase.execute(name);
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/findByTipoCozinha")
+    @GetMapping("/findByTipoCozinha")
     @Operation(summary = "Buscar Restaurantes por Tipo de Cozinha",
             description = "Busca restaurante por Tipo de Cozinha.")
-    public ResponseEntity<List<RestauranteResponse>> buscarRestaurantePorTipoCozinha
-            (@RequestBody @Valid RestauranteBuscaTipoCozinhaRequest dto) {
-
-        var response = buscarRestaurantesPorTipoDeCozinhaUseCase.execute(dto);
-
+    public ResponseEntity<List<RestauranteResponse>> buscarRestaurantePorTipoCozinha(@RequestParam  String tipoCozinha) {
+        var response = buscarRestaurantesPorTipoDeCozinhaUseCase.execute(tipoCozinha);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/findByLocalizacao")
     @Operation(summary = "Buscar Restaurantes por Localizacao",
             description = "Busca restaurante por Localizacao.")
-    public ResponseEntity<List<RestauranteResponse>> buscarRestaurantePorLocalizacao
-            (@RequestBody @Valid RestauranteBuscaLocalizacaoRequest dto) {
-
+    public ResponseEntity<List<RestauranteResponse>> buscarRestaurantePorLocalizacao(@RequestBody @Valid RestauranteBuscaLocalizacaoRequest dto) {
         var response = buscarRestaurantesPorLocalizacaoUseCase.execute(dto);
-
         return ResponseEntity.ok(response);
     }
 
