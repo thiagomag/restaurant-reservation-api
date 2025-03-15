@@ -23,28 +23,31 @@ import lombok.ToString;
 @Setter
 @EqualsAndHashCode(callSuper = false)
 @ToString
-@Builder(toBuilder = true)
+@Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class RestauranteRequest {
 
-    //@NotBlank(message = "O nome do restaurante é obrigatório")
-    @Schema(description = "Nome do restaurante", example = "Restaurante do Chef", required = true)
+    @Schema(description = "Identificador do restaurante", example = "1")
+    private Long id;
+
+    @NotBlank(message = "O nome do restaurante é obrigatório")
+    @Schema(description = "Nome do restaurante", example = "Restaurante do Chef")
     private String nome;
 
-    //@NotNull(message = "O endereço é obrigatório")
-    @Schema(description = "Endereço completo do restaurante",  required = true)
+    @NotNull(message = "O endereço é obrigatório")
+    @Schema(description = "Endereço completo do restaurante")
     private EnderecoRequest endereco;
 
-    //@NotNull(message = "O tipo de cozinha é obrigatório")
-    @Schema(description = "Tipo de cozinha do restaurante", example = "ITALIANA", required = true)
+    @NotNull(message = "O tipo de cozinha é obrigatório")
+    @Schema(description = "Tipo de cozinha do restaurante", example = "ITALIANA")
     private TiposCozinhaEnum tipoCozinha;
 
-    //@Size(max = 100, message = "O horário de funcionamento deve ter no máximo 100 caracteres")
+    @Size(max = 100, message = "O horário de funcionamento deve ter no máximo 100 caracteres")
     @Schema(description = "Horário de funcionamento do restaurante", example = "10:00 - 22:00")
     private String horarioFuncionamento;
 
-    //@NotBlank(message = "A capacidade do restaurante é obrigatória")
-    @Schema(description = "Capacidade total de pessoas do restaurante", example = "100", required = true)
-    private int capacidade;
+    @NotNull(message = "A capacidade do restaurante é obrigatória")
+    @Schema(description = "Capacidade total de pessoas do restaurante", example = "100")
+    private Integer capacidade;
 }

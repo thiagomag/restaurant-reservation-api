@@ -7,10 +7,8 @@ import br.com.postechfiap.restaurantreservationapi.enuns.TiposCozinhaEnum;
 import br.com.postechfiap.restaurantreservationapi.exception.GlobalExceptionHandler;
 import br.com.postechfiap.restaurantreservationapi.exception.reserva.ReservaNotFoundException;
 import br.com.postechfiap.restaurantreservationapi.exception.restaurante.RestauranteNotFoundException;
-import br.com.postechfiap.restaurantreservationapi.interfaces.restaurante.BuscarRestaurantesPorLocalizacaoUseCase;
-import br.com.postechfiap.restaurantreservationapi.interfaces.restaurante.BuscarRestaurantesPorNomeUseCase;
-import br.com.postechfiap.restaurantreservationapi.interfaces.restaurante.BuscarRestaurantesPorTipoDeCozinhaUseCase;
-import br.com.postechfiap.restaurantreservationapi.interfaces.restaurante.CadastrarRestauranteUseCase;
+import br.com.postechfiap.restaurantreservationapi.interfaces.restaurante.*;
+import br.com.postechfiap.restaurantreservationapi.utils.RestauranteTestUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -27,8 +25,7 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -52,6 +49,12 @@ class RestauranteControllerTest {
     @Mock
     private BuscarRestaurantesPorLocalizacaoUseCase buscarRestaurantesPorLocalizacaoUseCase;
 
+    @Mock
+    private AtualizarCadastroRestauranteUseCase atualizarCadastroRestauranteUseCase;
+
+    @Mock
+    private DeletarRestauranteUseCase deletarRestauranteUseCase;
+
     AutoCloseable openMocks;
 
     @BeforeEach
@@ -69,8 +72,8 @@ class RestauranteControllerTest {
     @Test
     void deveCadastrarRestauranteComSucesso() throws Exception {
         // Criar objetos de teste
-        final var request = RestauranteRequest.builder().nome("Restaurante Exemplo").build();
-        final var response = RestauranteResponse.builder().id(1L).nome("Restaurante Exemplo").build();
+        final var request = RestauranteTestUtils.buildRestauranteRequest();
+        final var response = RestauranteTestUtils.buildRestauranteResponse();
 
         // Configurar comportamento do mock
         when(cadastrarRestauranteUseCase.execute(any(RestauranteRequest.class)))
@@ -83,7 +86,22 @@ class RestauranteControllerTest {
         mockMvc.perform(post("/restaurante")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestJson))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andDo(result -> {
+                    // Verificar se o JSON de resposta contém o nome do restaurante
+                    final var content = result.getResponse().getContentAsString();
+                    final var nome = response.getNome();
+                    final var tipoCozinha = response.getTipoCozinha().name();
+                    final var horarioFuncionamento = response.getHorarioFuncionamento();
+                    final var capacidade = response.getCapacidade();
+
+                    // Verificar se o JSON de resposta contém o nome do restaurante
+                    assert content != null;
+                    assert content.contains(nome);
+                    assert content.contains(tipoCozinha);
+                    assert content.contains(horarioFuncionamento);
+                    assert content.contains(String.valueOf(capacidade));
+                });
 
         // Verificar se o caso de uso foi chamado corretamente
         verify(cadastrarRestauranteUseCase, times(1)).execute(any(RestauranteRequest.class));
@@ -93,7 +111,7 @@ class RestauranteControllerTest {
     void deveBuscarRestaurantePorNomeComSucesso() throws Exception {
         // Criar objetos de teste
         final var response = List.of(new RestauranteResponse(1L, "Restaurante Exemplo",
-                null, TiposCozinhaEnum.AMAZONICA,"11:00 - 22:00",10));
+                null, TiposCozinhaEnum.AMAZONICA, "11:00 - 22:00", 10));
 
         // Configurar comportamento do mock
         when(buscarRestaurantesPorNomeUseCase.execute(anyString()))
@@ -108,10 +126,11 @@ class RestauranteControllerTest {
 
         verify(buscarRestaurantesPorNomeUseCase, times(1)).execute(anyString());
     }
+
     @Test
     void deveBuscarRestaurantePorTipoCozinhaComSucesso() throws Exception {
         final var response = List.of(new RestauranteResponse(2L, "Pizzaria Roma",
-                null, TiposCozinhaEnum.ITALIANA,"11:00 - 22:00",10));
+                null, TiposCozinhaEnum.ITALIANA, "11:00 - 22:00", 10));
 
         when(buscarRestaurantesPorTipoDeCozinhaUseCase.execute(anyString()))
                 .thenReturn(response);
@@ -128,7 +147,7 @@ class RestauranteControllerTest {
     @Test
     void deveBuscarRestaurantePorLocalizacaoComSucesso() throws Exception {
         final var response = List.of(new RestauranteResponse(3L, "Churrascaria Paulista",
-                null, TiposCozinhaEnum.ITALIANA,"11:00 - 22:00",10));
+                null, TiposCozinhaEnum.ITALIANA, "11:00 - 22:00", 10));
 
         when(buscarRestaurantesPorLocalizacaoUseCase.execute(any(RestauranteBuscaLocalizacaoRequest.class)))
                 .thenReturn(response);
@@ -215,6 +234,44 @@ class RestauranteControllerTest {
     }
 
 
+    @Test
+    void deveAtualizarRestauranteComSucesso() throws Exception {
+        // Criar objetos de teste
+        final var request = RestauranteRequest.builder().nome("Novo Nome").build();
+        final var response = RestauranteTestUtils.buildRestauranteResponse();
 
+        // Configurar comportamento do mock
+        when(atualizarCadastroRestauranteUseCase.execute(any(RestauranteRequest.class)))
+                .thenReturn(response);
+
+        // Converter o objeto para JSON
+        final var requestJson = new ObjectMapper().writeValueAsString(request);
+
+        // Simular a requisição POST
+        mockMvc.perform(put("/restaurante/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isOk());
+
+        // Verificar se o caso de uso foi chamado corretamente
+        verify(atualizarCadastroRestauranteUseCase, times(1)).execute(any(RestauranteRequest.class));
+    }
+
+    @Test
+    void deveDeletarRestauranteComSucesso() throws Exception {
+        // Criar objetos de teste
+        final var restauranteId = 1L;
+
+        // Configurar comportamento do mock
+        doNothing().when(deletarRestauranteUseCase).execute(restauranteId);
+
+        // Simular a requisição POST
+        mockMvc.perform(delete("/restaurante/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        // Verificar se o caso de uso foi chamado corretamente
+        verify(deletarRestauranteUseCase, times(1)).execute(restauranteId);
+    }
 
 }

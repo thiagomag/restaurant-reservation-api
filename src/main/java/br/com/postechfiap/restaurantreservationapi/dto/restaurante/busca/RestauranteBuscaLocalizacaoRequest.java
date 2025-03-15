@@ -1,12 +1,9 @@
 package br.com.postechfiap.restaurantreservationapi.dto.restaurante.busca;
 
-import br.com.postechfiap.restaurantreservationapi.entities.Endereco;
-import br.com.postechfiap.restaurantreservationapi.enuns.TiposCozinhaEnum;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 

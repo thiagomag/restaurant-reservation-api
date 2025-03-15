@@ -4,15 +4,10 @@ import br.com.postechfiap.restaurantreservationapi.dto.endereco.EnderecoRequest;
 import br.com.postechfiap.restaurantreservationapi.dto.restaurante.RestauranteRequest;
 import br.com.postechfiap.restaurantreservationapi.entities.Endereco;
 import br.com.postechfiap.restaurantreservationapi.enuns.TiposCozinhaEnum;
-import br.com.postechfiap.restaurantreservationapi.interfaces.restaurante.BuscarRestaurantesPorLocalizacaoUseCase;
-import br.com.postechfiap.restaurantreservationapi.interfaces.restaurante.BuscarRestaurantesPorNomeUseCase;
-import br.com.postechfiap.restaurantreservationapi.interfaces.restaurante.BuscarRestaurantesPorTipoDeCozinhaUseCase;
-import br.com.postechfiap.restaurantreservationapi.interfaces.restaurante.CadastrarRestauranteUseCase;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
@@ -32,15 +27,6 @@ class RestauranteControllerIT {
 
     @LocalServerPort
     private int port;
-
-    @Autowired
-    private CadastrarRestauranteUseCase cadastrarRestauranteUseCase;
-    @Autowired
-    private BuscarRestaurantesPorNomeUseCase buscarRestaurantesPorNomeUseCase;
-    @Autowired
-    private BuscarRestaurantesPorTipoDeCozinhaUseCase buscarRestaurantesPorTipoDeCozinhaUseCase;
-    @Autowired
-    private BuscarRestaurantesPorLocalizacaoUseCase buscarRestaurantesPorLocalizacaoUseCase;
 
     @BeforeEach
     public void setup() {
@@ -151,5 +137,69 @@ class RestauranteControllerIT {
                 .then()
                 .statusCode(500)  // Verifica que o status retornado é 500 Internal Server Error
                 .body("message[0]", containsString("Required request parameter 'name' for method parameter type String is not present")); // Mensagem corrigida
+    }
+
+    @Test
+    void deveAtualizarRestauranteComSucesso() {
+        // Criar um objeto de request válido (RestauranteRequest)
+
+        RestauranteRequest restauranteRequest = RestauranteRequest.builder()
+                .nome("Novo Nome")
+                .build();
+
+        // Realizar o PUT usando Rest Assured e verificar a resposta
+        given()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(restauranteRequest)
+                .when()
+                .put("/restaurante/3")
+                .then()
+                .statusCode(200)  // Verifica que o status retornado é 200 OK
+                .body("nome", equalTo("Novo Nome"))
+                .body("tipo_cozinha", equalTo("STEAKHOUSE")) // Ajustado para corresponder ao JSON
+                .body("endereco.logradouro", equalTo("Rua C"))
+                .body("endereco.estado", equalTo("MG")); // Adicionado para garantir que o estado seja salvo corretamente
+    }
+
+    @Test
+    void deveRetornarErroAoAtualizarRestaurante() {
+        // Criar um objeto de request válido (RestauranteRequest)
+
+        RestauranteRequest restauranteRequest = RestauranteRequest.builder()
+                .nome("Novo Nome")
+                .build();
+
+        // Realizar o PUT usando Rest Assured e verificar a resposta
+        given()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(restauranteRequest)
+                .when()
+                .put("/restaurante/4")
+                .then()
+                .statusCode(404)
+                .body("message[0]", containsString("Restaurante não encontrado."));
+    }
+
+    @Test
+    void deveDeletarRestauranteComSucesso() {
+        // Realizar o PUT usando Rest Assured e verificar a resposta
+        given()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when()
+                .delete("/restaurante/2")
+                .then()
+                .statusCode(200);  // Verifica que o status retornado é 200 OK
+    }
+
+    @Test
+    void deveRetornarErroAoDeletarRestaurante() {
+        // Realizar o PUT usando Rest Assured e verificar a resposta
+        given()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when()
+                .delete("/restaurante/4")
+                .then()
+                .statusCode(404)
+                .body("message[0]", containsString("Restaurante não encontrado."));
     }
 }

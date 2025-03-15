@@ -3,10 +3,7 @@ package br.com.postechfiap.restaurantreservationapi.controller;
 import br.com.postechfiap.restaurantreservationapi.dto.restaurante.RestauranteRequest;
 import br.com.postechfiap.restaurantreservationapi.dto.restaurante.RestauranteResponse;
 import br.com.postechfiap.restaurantreservationapi.dto.restaurante.busca.RestauranteBuscaLocalizacaoRequest;
-import br.com.postechfiap.restaurantreservationapi.interfaces.restaurante.BuscarRestaurantesPorLocalizacaoUseCase;
-import br.com.postechfiap.restaurantreservationapi.interfaces.restaurante.BuscarRestaurantesPorNomeUseCase;
-import br.com.postechfiap.restaurantreservationapi.interfaces.restaurante.BuscarRestaurantesPorTipoDeCozinhaUseCase;
-import br.com.postechfiap.restaurantreservationapi.interfaces.restaurante.CadastrarRestauranteUseCase;
+import br.com.postechfiap.restaurantreservationapi.interfaces.restaurante.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -28,6 +25,8 @@ public class RestauranteController {
     private final BuscarRestaurantesPorNomeUseCase buscarRestaurantesPorNomeUseCase;
     private final BuscarRestaurantesPorTipoDeCozinhaUseCase buscarRestaurantesPorTipoDeCozinhaUseCase;
     private final BuscarRestaurantesPorLocalizacaoUseCase buscarRestaurantesPorLocalizacaoUseCase;
+    private final AtualizarCadastroRestauranteUseCase atualizarCadastroRestauranteUseCase;
+    private final DeletarRestauranteUseCase deletarRestauranteUseCase;
 
     @PostMapping
     @Operation(summary = "Cadastrar Restaurante", description = "Cadastra um novo restaurante.")
@@ -67,7 +66,17 @@ public class RestauranteController {
         return ResponseEntity.ok(response);
     }
 
+    @PutMapping("/{id}")
+    @Operation(summary = "Atualizar Restaurante", description = "Atualiza um restaurante.")
+    public RestauranteResponse atualizarRestaurante(@RequestBody RestauranteRequest dto,
+                                                    @PathVariable Long id) {
+        dto.setId(id);
+        return atualizarCadastroRestauranteUseCase.execute(dto);
+    }
 
-
-
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Deletar Restaurante", description = "Deleta um restaurante.")
+    public Void deletarRestaurante(@PathVariable Long id) {
+        return deletarRestauranteUseCase.execute(id);
+    }
 }

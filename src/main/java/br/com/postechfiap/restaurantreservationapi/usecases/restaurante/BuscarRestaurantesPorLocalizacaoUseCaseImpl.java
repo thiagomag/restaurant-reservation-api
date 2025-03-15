@@ -1,6 +1,5 @@
 package br.com.postechfiap.restaurantreservationapi.usecases.restaurante;
 
-import br.com.postechfiap.restaurantreservationapi.dto.endereco.EnderecoResponse;
 import br.com.postechfiap.restaurantreservationapi.dto.restaurante.RestauranteResponse;
 import br.com.postechfiap.restaurantreservationapi.dto.restaurante.busca.RestauranteBuscaLocalizacaoRequest;
 import br.com.postechfiap.restaurantreservationapi.entities.Restaurante;

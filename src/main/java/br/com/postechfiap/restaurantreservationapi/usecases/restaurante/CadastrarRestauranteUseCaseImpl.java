@@ -23,7 +23,6 @@ public class CadastrarRestauranteUseCaseImpl implements CadastrarRestauranteUseC
     private final RestauranteResponseAdapter restauranteResponseAdapter;
     private final RestauranteRepository restauranteRepository;
 
-
     @Override
     public RestauranteResponse execute(RestauranteRequest restauranteRequest) {
         final var restaurante = restauranteAdapter.adapt(restauranteRequest);
