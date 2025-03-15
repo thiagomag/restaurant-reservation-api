@@ -127,18 +127,14 @@ class RestauranteControllerTest {
 
     @Test
     void deveBuscarRestaurantePorLocalizacaoComSucesso() throws Exception {
-        final var request = new RestauranteBuscaLocalizacaoRequest(null,null,"São Paulo",null);
         final var response = List.of(new RestauranteResponse(3L, "Churrascaria Paulista",
                 null, TiposCozinhaEnum.ITALIANA,"11:00 - 22:00",10));
 
         when(buscarRestaurantesPorLocalizacaoUseCase.execute(any(RestauranteBuscaLocalizacaoRequest.class)))
                 .thenReturn(response);
 
-        final var requestJson = new ObjectMapper().writeValueAsString(request);
-
-        mockMvc.perform(post("/restaurante/findByLocalizacao")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestJson))
+        mockMvc.perform(get("/restaurante/findByLocalizacao?cidade=São Paulo")
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(3L))
                 .andExpect(jsonPath("$[0].nome").value("Churrascaria Paulista"));
@@ -200,21 +196,23 @@ class RestauranteControllerTest {
     @Test
     @DisplayName("Deve falhar ao buscar restaurante por localizacao quando nenhum for encontrado")
     void deveFalharAoBuscarRestaurantePorLocalizacaoQuandoNenhumForEncontrado() throws Exception {
-        final var request = new RestauranteBuscaLocalizacaoRequest(null, null, "São Paulo", null);
-
         // Configurar comportamento do mock para o use case de busca por localizacao
         doThrow(new RestauranteNotFoundException())
                 .when(buscarRestaurantesPorLocalizacaoUseCase).execute(any(RestauranteBuscaLocalizacaoRequest.class));
 
-        final var requestJson = new ObjectMapper().writeValueAsString(request);
-
-        mockMvc.perform(post("/restaurante/findByLocalizacao")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestJson))
+        mockMvc.perform(get("/restaurante/findByLocalizacao?cidade=xyz")
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
-
+    @Test
+    @DisplayName("Deve falhar ao buscar restaurante por localizacao quando não informar a cidade")
+    void deveFalharAoBuscarRestaurantePorLocalizacaoQuandoNaoInformarCidade() throws Exception {
+        // Configurar comportamento do mock para o use case de busca por localizacao
+        mockMvc.perform(get("/restaurante/findByLocalizacao?cep=11111-111")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is5xxServerError());
+    }
 
 
 

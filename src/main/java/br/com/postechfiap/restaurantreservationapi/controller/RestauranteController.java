@@ -50,10 +50,19 @@ public class RestauranteController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/findByLocalizacao")
+    @GetMapping("/findByLocalizacao")
     @Operation(summary = "Buscar Restaurantes por Localizacao",
             description = "Busca restaurante por Localizacao.")
-    public ResponseEntity<List<RestauranteResponse>> buscarRestaurantePorLocalizacao(@RequestBody @Valid RestauranteBuscaLocalizacaoRequest dto) {
+    public ResponseEntity<List<RestauranteResponse>> buscarRestaurantePorLocalizacao(@RequestParam(required = false) String cep,
+                                                                                     @RequestParam(required = false) String estado,
+                                                                                     @RequestParam String cidade,
+                                                                                     @RequestParam(required = false) String logradouro) {
+        final var dto = RestauranteBuscaLocalizacaoRequest.builder()
+                .cep(cep)
+                .estado(estado)
+                .cidade(cidade)
+                .logradouro(logradouro)
+                .build();
         var response = buscarRestaurantesPorLocalizacaoUseCase.execute(dto);
         return ResponseEntity.ok(response);
     }

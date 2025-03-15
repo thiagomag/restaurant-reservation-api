@@ -2,7 +2,6 @@ package br.com.postechfiap.restaurantreservationapi.controller;
 
 import br.com.postechfiap.restaurantreservationapi.dto.endereco.EnderecoRequest;
 import br.com.postechfiap.restaurantreservationapi.dto.restaurante.RestauranteRequest;
-import br.com.postechfiap.restaurantreservationapi.dto.restaurante.busca.RestauranteBuscaLocalizacaoRequest;
 import br.com.postechfiap.restaurantreservationapi.entities.Endereco;
 import br.com.postechfiap.restaurantreservationapi.enuns.TiposCozinhaEnum;
 import br.com.postechfiap.restaurantreservationapi.interfaces.restaurante.BuscarRestaurantesPorLocalizacaoUseCase;
@@ -127,20 +126,12 @@ class RestauranteControllerIT {
 
     @Test
     void deveBuscarRestaurantesPorLocalizacaoComSucesso() {
-        // Criar um objeto de request válido (RestauranteBuscaLocalizacaoRequest)
-        RestauranteBuscaLocalizacaoRequest buscaLocalizacaoRequest = RestauranteBuscaLocalizacaoRequest.builder()
-                .cep("01000-000")
-                .estado("SP")
-                .cidade("Sao Paulo")
-                .logradouro("Rua A")
-                .build();
 
         // Realizar o POST usando Rest Assured e verificar a resposta
         given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(buscaLocalizacaoRequest)
                 .when()
-                .post("/restaurante/findByLocalizacao")
+                .get("/restaurante/findByLocalizacao?cep=01000-000&estado=SP&cidade=Sao Paulo&logradouro=Rua A")
                 .then()
                 .statusCode(200)  // Verifica que o status retornado é 200 OK
                 .body("[0].nome", equalTo("Restaurante Sabor"))
