@@ -69,7 +69,7 @@ class RestauranteControllerIT {
                 .when()
                 .post("/restaurante")
                 .then()
-                .statusCode(200)  // Verifica que o status retornado é 200 OK
+                .statusCode(201)  // Verifica que o status retornado é 200 OK
                 .body("nome", equalTo("Restaurante Sabor"))
                 .body("tipo_cozinha", equalTo("ITALIANA")) // Ajustado para corresponder ao JSON
                 .body("endereco.logradouro", equalTo("Rua A"))

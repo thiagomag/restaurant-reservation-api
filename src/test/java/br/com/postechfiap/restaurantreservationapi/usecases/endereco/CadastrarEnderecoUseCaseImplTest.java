@@ -4,7 +4,7 @@ import br.com.postechfiap.restaurantreservationapi.adapters.endereco.EnderecoAda
 import br.com.postechfiap.restaurantreservationapi.adapters.endereco.EnderecoResponseAdapter;
 import br.com.postechfiap.restaurantreservationapi.interfaces.endereco.CadastrarEnderecoUseCase;
 import br.com.postechfiap.restaurantreservationapi.interfaces.endereco.EnderecoRepository;
-import br.com.postechfiap.restaurantreservationapi.utils.EnderecoTestUtils;
+import br.com.postechfiap.restaurantreservationapi.utils.endereco.EnderecoTestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

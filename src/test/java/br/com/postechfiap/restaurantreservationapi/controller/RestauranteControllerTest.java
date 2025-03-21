@@ -8,7 +8,7 @@ import br.com.postechfiap.restaurantreservationapi.exception.GlobalExceptionHand
 import br.com.postechfiap.restaurantreservationapi.exception.reserva.ReservaNotFoundException;
 import br.com.postechfiap.restaurantreservationapi.exception.restaurante.RestauranteNotFoundException;
 import br.com.postechfiap.restaurantreservationapi.interfaces.restaurante.*;
-import br.com.postechfiap.restaurantreservationapi.utils.RestauranteTestUtils;
+import br.com.postechfiap.restaurantreservationapi.utils.restaurante.RestauranteTestUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -86,7 +86,7 @@ class RestauranteControllerTest {
         mockMvc.perform(post("/restaurante")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestJson))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andDo(result -> {
                     // Verificar se o JSON de resposta contém o nome do restaurante
                     final var content = result.getResponse().getContentAsString();

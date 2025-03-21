@@ -1,4 +1,4 @@
-package br.com.postechfiap.restaurantreservationapi.utils;
+package br.com.postechfiap.restaurantreservationapi.utils.endereco;
 
 import br.com.postechfiap.restaurantreservationapi.dto.endereco.EnderecoRequest;
 import br.com.postechfiap.restaurantreservationapi.dto.endereco.EnderecoResponse;

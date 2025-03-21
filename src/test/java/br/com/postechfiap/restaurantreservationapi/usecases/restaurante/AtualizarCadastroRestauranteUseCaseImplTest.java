@@ -9,7 +9,7 @@ import br.com.postechfiap.restaurantreservationapi.entities.Endereco;
 import br.com.postechfiap.restaurantreservationapi.entities.Restaurante;
 import br.com.postechfiap.restaurantreservationapi.interfaces.restaurante.AtualizarCadastroRestauranteUseCase;
 import br.com.postechfiap.restaurantreservationapi.interfaces.restaurante.RestauranteRepository;
-import br.com.postechfiap.restaurantreservationapi.utils.RestauranteTestUtils;
+import br.com.postechfiap.restaurantreservationapi.utils.restaurante.RestauranteTestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

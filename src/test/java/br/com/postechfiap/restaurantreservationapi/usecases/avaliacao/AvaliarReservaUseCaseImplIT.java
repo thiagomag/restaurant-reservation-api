@@ -2,32 +2,27 @@ package br.com.postechfiap.restaurantreservationapi.usecases.avaliacao;
 
 import br.com.postechfiap.restaurantreservationapi.dto.avaliacao.AvaliacaoRequest;
 import br.com.postechfiap.restaurantreservationapi.dto.avaliacao.AvaliacaoResponse;
-import br.com.postechfiap.restaurantreservationapi.entities.*;
-import br.com.postechfiap.restaurantreservationapi.enuns.TiposCozinhaEnum;
+import br.com.postechfiap.restaurantreservationapi.entities.Avaliacao;
 import br.com.postechfiap.restaurantreservationapi.exception.reserva.ReservaJaAvaliadaException;
 import br.com.postechfiap.restaurantreservationapi.interfaces.avaliacao.AvaliacaoRepository;
 import br.com.postechfiap.restaurantreservationapi.interfaces.reserva.ReservaRepository;
 import br.com.postechfiap.restaurantreservationapi.utils.ReservaHelper;
 import br.com.postechfiap.restaurantreservationapi.validator.AvaliacaoValidator;
-import org.hibernate.annotations.processing.SQL;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.boot.test.context.SpringBootTest;
-
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doThrow;
 
 
 @SpringBootTest

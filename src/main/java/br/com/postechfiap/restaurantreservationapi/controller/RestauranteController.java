@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -30,8 +31,8 @@ public class RestauranteController {
 
     @PostMapping
     @Operation(summary = "Cadastrar Restaurante", description = "Cadastra um novo restaurante.")
-    public RestauranteResponse cadastrarRestaurante(@RequestBody @Valid RestauranteRequest dto) {
-        return cadastrarRestauranteUseCase.execute(dto);
+    public ResponseEntity<RestauranteResponse> cadastrarRestaurante(@RequestBody @Valid RestauranteRequest dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(cadastrarRestauranteUseCase.execute(dto));
     }
 
     @GetMapping("/findByName")

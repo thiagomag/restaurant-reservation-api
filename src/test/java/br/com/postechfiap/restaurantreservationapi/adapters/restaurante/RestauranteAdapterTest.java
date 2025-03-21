@@ -1,7 +1,7 @@
 package br.com.postechfiap.restaurantreservationapi.adapters.restaurante;
 
 import br.com.postechfiap.restaurantreservationapi.utils.JsonUtils;
-import br.com.postechfiap.restaurantreservationapi.utils.RestauranteTestUtils;
+import br.com.postechfiap.restaurantreservationapi.utils.restaurante.RestauranteTestUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;

@@ -1,9 +1,10 @@
-package br.com.postechfiap.restaurantreservationapi.utils;
+package br.com.postechfiap.restaurantreservationapi.utils.restaurante;
 
 import br.com.postechfiap.restaurantreservationapi.dto.restaurante.RestauranteRequest;
 import br.com.postechfiap.restaurantreservationapi.dto.restaurante.RestauranteResponse;
 import br.com.postechfiap.restaurantreservationapi.entities.Restaurante;
 import br.com.postechfiap.restaurantreservationapi.enuns.TiposCozinhaEnum;
+import br.com.postechfiap.restaurantreservationapi.utils.endereco.EnderecoTestUtils;
 
 public class RestauranteTestUtils {
 

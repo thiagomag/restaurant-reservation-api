@@ -1,6 +1,6 @@
 package br.com.postechfiap.restaurantreservationapi.adapters.endereco;
 
-import br.com.postechfiap.restaurantreservationapi.utils.EnderecoTestUtils;
+import br.com.postechfiap.restaurantreservationapi.utils.endereco.EnderecoTestUtils;
 import br.com.postechfiap.restaurantreservationapi.utils.JsonUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
