@@ -24,21 +24,29 @@ jobs:
 
       # Step 3: Build com Gradle usando o JDK 21
       - name: Build with Gradle
-        run: chmod +x ./gradlew && ./gradlew build
+        run: make build
 
       # Step 4: Run tests with Gradle
-      - name: Run tests with Gradle
-        run: chmod +x ./gradlew && ./gradlew test
+      - name: Run unit tests with Gradle
+        run: make unitTest
 
-      # Step 5: Configurar Docker Buildx
+      #Step 5: Run integration tests with Gradle
+      - name: Run integration tests with Gradle
+        run: make integrationTest
+
+      # Step 6: Run system tests with Gradle
+      - name: Run system tests with Gradle
+        run: make systemTest
+
+      # Step 7: Configurar Docker Buildx
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # Step 6: Login no Docker Hub
+      # Step 8: Login no Docker Hub
       - name: Login to Docker Hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-      # Step 7: Build multi-architecture Docker image
+      # Step 9: Build multi-architecture Docker image
       - name: Build and push Docker image (multi-arch)
         uses: docker/build-push-action@v5
         with:

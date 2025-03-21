@@ -75,12 +75,11 @@ tasks.named('test') {
     }
 }
 
-tasks.register('cucumberTest', Test) {
+tasks.register('systemTest', Test) {
     description = 'Executa apenas os testes do Cucumber via JUnit Platform'
     group = 'verification'
     useJUnitPlatform()
 
-    // 🔥 Inclui explicitamente a classe do runner
     include '**/CucumberTest.class'
 
     testClassesDirs = sourceSets.test.output.classesDirs
