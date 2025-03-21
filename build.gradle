@@ -2,7 +2,6 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.4.2'
     id 'io.spring.dependency-management' version '1.1.7'
-    id 'jacoco'
 }
 
 group = 'br.com.postechfiap'
@@ -46,7 +45,7 @@ dependencies {
     testImplementation 'io.cucumber:cucumber-spring:7.21.1'
     testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.21.1'
     testImplementation 'org.junit.platform:junit-platform-suite-api:1.12.1'
-    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.3'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
@@ -68,18 +67,28 @@ tasks.register('unitTest', Test) {
     }
 }
 
-tasks.register('systemTest', Test) {
-    useJUnitPlatform()
-    include '**/CucumberTest.class' // Garante que o CucumberTest seja executado
-    testLogging {
-        events "PASSED", "FAILED", "SKIPPED"
-    }
-}
-
 tasks.named('test') {
     useJUnitPlatform()
     testLogging {
         // Exibe informações sobre os testes passados, falhados e ignorados
         events "PASSED", "FAILED", "SKIPPED"
+    }
+}
+
+tasks.register('cucumberTest', Test) {
+    description = 'Executa apenas os testes do Cucumber via JUnit Platform'
+    group = 'verification'
+    useJUnitPlatform()
+
+    // 🔥 Inclui explicitamente a classe do runner
+    include '**/CucumberTest.class'
+
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat = "full"
+        showStandardStreams = true
     }
 }
