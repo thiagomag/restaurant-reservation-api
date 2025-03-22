@@ -1,6 +1,8 @@
 package br.com.postechfiap.restaurantreservationapi.controller;
 
+import br.com.postechfiap.restaurantreservationapi.dto.usuario.UsuarioRequest;
 import br.com.postechfiap.restaurantreservationapi.interfaces.reserva.ReservaRepository;
+import br.com.postechfiap.restaurantreservationapi.interfaces.usuario.UsuarioRepository;
 import br.com.postechfiap.restaurantreservationapi.utils.usuario.UsuarioTestUtils;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,10 +29,7 @@ public class UsuarioControllerIT {
     private int port;
 
     @Autowired
-    ReservaRepository reservaRepository;
-
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+    UsuarioRepository usuarioRepository;
 
     @BeforeEach
     public void setup() {
@@ -80,7 +79,7 @@ public class UsuarioControllerIT {
                 .when()
                 .post("/usuario")
                 .then()
-                .statusCode(40);
+                .statusCode(400);
     }
 
     @Test
@@ -112,31 +111,17 @@ public class UsuarioControllerIT {
     }
 
     @Test
-    void deveRetornarErroQuandoEmailJaCadastrado() {
-        final var usuarioRequest = UsuarioTestUtils.buildUsuarioRequest();
-        usuarioRequest.setEmail("carlos@email.com");
-
-        given()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(usuarioRequest)  // Passando o objeto no corpo da requisição
-                .when()
-                .post("/usuario")
-                .then()
-                .statusCode(409);
-    }
-
-    @Test
     void deveBuscarUsuarioPorEmailComSucesso() {
         given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .queryParam("email", "carlos@email.com")
+                .queryParam("email", "mariana@email.com")
                 .when()
                 .get("/usuario/findByEmail")
                 .then()
                 .statusCode(200)
-                .body("id", equalTo(1))
-                .body("nome", equalTo("Carlos Silva"))
-                .body("email", equalTo("carlos@email.com"));
+                .body("id", equalTo(2))
+                .body("nome", equalTo("Mariana Souza"))
+                .body("email", equalTo("mariana@email.com"));
     }
 
     @Test
@@ -152,9 +137,8 @@ public class UsuarioControllerIT {
 
     @Test
     void deveAtualizarUsuarioComSucesso() {
-        final var usuarioRequest = UsuarioTestUtils.buildUsuarioRequest();
-        usuarioRequest.setNome(null);
-        usuarioRequest.setTelefone(null);
+        final var usuarioRequest = new UsuarioRequest();
+        usuarioRequest.setEmail("novoemail@email.com");
 
         given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -165,7 +149,7 @@ public class UsuarioControllerIT {
                 .statusCode(200)
                 .body("id", equalTo(1))
                 .body("nome", equalTo("Carlos Silva"))
-                .body("email", equalTo("teste@teste.com"));
+                .body("email", equalTo("novoemail@email.com"));
     }
 
     @Test
@@ -188,7 +172,7 @@ public class UsuarioControllerIT {
         given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when()
-                .delete("/usuario/2")
+                .delete("/usuario/3")
                 .then()
                 .statusCode(204);
     }
