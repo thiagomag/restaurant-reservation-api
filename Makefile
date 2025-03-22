@@ -17,3 +17,9 @@ clean:
 
 build:
 	./gradlew build
+
+docker-build:
+	docker buildx build \
+		--platform linux/amd64,linux/arm64 \
+		-t $(DOCKER_USERNAME)/$(DOCKER_IMAGE_NAME):latest \
+		--push .
