@@ -13,7 +13,6 @@ import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
 import static io.restassured.RestAssured.given;
@@ -53,10 +52,6 @@ class AvaliacaoControllerIT {
         avaliacaoRequest.setReservaId(1L);
         avaliacaoRequest.setNota(5);
         avaliacaoRequest.setComentario("Ótima reserva!");
-
-        var reserva = reservaRepository.findAll();
-
-        System.out.println("Reservaaaaaaaaaaaas" +reserva);
 
         // Realizar o POST usando Rest Assured e verificar a resposta
         given()

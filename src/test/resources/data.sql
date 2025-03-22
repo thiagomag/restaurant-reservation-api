@@ -41,3 +41,4 @@ INSERT INTO reserva_mesa (reserva_id, mesa_id) VALUES
 ALTER SEQUENCE reserva_id_seq RESTART WITH 4;
 ALTER SEQUENCE restaurante_id_seq RESTART WITH 4;
 ALTER SEQUENCE endereco_id_seq RESTART WITH 4;
+ALTER SEQUENCE usuario_id_seq RESTART WITH 4;

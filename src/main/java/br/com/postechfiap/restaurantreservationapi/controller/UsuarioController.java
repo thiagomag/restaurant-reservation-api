@@ -40,15 +40,17 @@ public class UsuarioController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping
+    @PutMapping("/{usuarioId}")
     @Operation(summary = "Atualizar Cadastro de Usuário", description = "Atualiza o cadastro de um usuário.")
-    public ResponseEntity<UsuarioResponse> atualizarCadastroUsuario(@RequestBody UsuarioRequest dto) {
+    public ResponseEntity<UsuarioResponse> atualizarCadastroUsuario(@RequestBody UsuarioRequest dto,
+                                                                    @PathVariable Long usuarioId) {
+        dto.setId(usuarioId);
         return ResponseEntity.ok(atualizarCadastroUsuarioUseCase.execute(dto));
     }
 
     @DeleteMapping("/{usuarioId}")
     @Operation(summary = "Deletar Usuário", description = "Deleta um usuário.")
-    public ResponseEntity<Void> deletarUsuario(@RequestParam Long usuarioId) {
+    public ResponseEntity<Void> deletarUsuario(@PathVariable Long usuarioId) {
         deletarUsuarioUseCase.execute(usuarioId);
         return ResponseEntity.noContent().build();
     }
