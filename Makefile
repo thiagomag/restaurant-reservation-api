@@ -1,7 +1,6 @@
 .PHONY: test clean build
 
-test:
-	./gradlew clean test
+test: unitTest integrationTest systemTest
 
 unitTest:
 	./gradlew clean unitTest
@@ -23,3 +22,6 @@ docker-build:
 		--platform linux/amd64,linux/arm64 \
 		-t $(DOCKER_USERNAME)/$(DOCKER_IMAGE_NAME):latest \
 		--push .
+
+docker-start:
+	docker compose -f docker-compose.yml up -d

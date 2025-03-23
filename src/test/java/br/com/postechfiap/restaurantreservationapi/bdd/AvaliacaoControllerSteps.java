@@ -58,6 +58,16 @@ public class AvaliacaoControllerSteps {
 
         Assertions.assertEquals(HttpStatus.CREATED, mesaResponse.getStatusCode());
 
+        //Criar um usuário
+        String usuarioUrl = "http://localhost:8080/usuario";
+        HttpHeaders headersUsuario = new HttpHeaders();
+        headersUsuario.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<String> usuarioEntity = new HttpEntity<>("{\"nome\":\"Usuario\",\"email\":\"usuario@teste.com\",\"telefone\":\"11999999999\"}", headersUsuario);
+        ResponseEntity<String> usuarioResponse = restTemplate.exchange(usuarioUrl, HttpMethod.POST, usuarioEntity, String.class);
+
+        Assertions.assertEquals(HttpStatus.CREATED, usuarioResponse.getStatusCode());
+
         // Criar reserva com restaurante válido
         String reservaUrl = "http://localhost:8080/reserva";
 
