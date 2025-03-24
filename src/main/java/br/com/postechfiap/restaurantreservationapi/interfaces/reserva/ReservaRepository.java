@@ -11,5 +11,5 @@ public interface ReservaRepository extends JpaRepository<Reserva,Long> {
     List<Reserva> findByRestauranteIdAndDataHoraReservaBetween(
             Long restauranteId, LocalDateTime inicioIntervalo, LocalDateTime fimIntervalo);
 
-
+    List<Reserva> findByRestauranteIdAndDeletedTmspIsNull(Long restauranteId);
 }

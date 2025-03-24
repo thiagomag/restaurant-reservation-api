@@ -12,12 +12,7 @@ systemTest:
 	./gradlew clean systemTest
 
 performanceTest:
-	@bash -c ' \
-		trap "$(MAKE) docker-stop" EXIT; \
-		$(MAKE) docker-start; \
-		./gradlew clean performanceTest \
-	'
-
+	./gradlew clean performanceTest
 
 clean:
 	./gradlew clean

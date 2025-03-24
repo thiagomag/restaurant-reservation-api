@@ -52,9 +52,7 @@ public class AvaliarReservaUseCaseImpl implements AvaliarReservaUseCase {
                 savedAvaliacao.getReserva().getUsuario().getId(),
                 savedAvaliacao.getReserva().getRestaurante().getNome(),
                 savedAvaliacao.getNota().getValor(),
-                savedAvaliacao.getComentario()
-
-        );
+                savedAvaliacao.getComentario());
     }
 
 

@@ -159,4 +159,32 @@ class ReservaControllerIT {
                 .statusCode(400)  // Verifica que o status retornado é 400 Bad Request
                 .body("message[0]", containsString("Data e hora não pode ser nulo."));
     }
+
+    @Test
+    void deveRetornarListaReservaPorRestaurante() {
+        // Supondo que o id do restaurante seja 1L
+        Long restauranteId = 1L;
+
+        // Realizar o GET usando Rest Assured e verificar a resposta
+        given()
+                .when()
+                .get("/reserva/findByRestauranteId?restauranteId={restauranteId}", restauranteId)
+                .then()
+                .statusCode(200)  // Verifica que o status retornado é 200 OK
+                .body("size()", greaterThan(0));  // Verifica que a lista de reservas não está vazia
+    }
+
+    @Test
+    void deveRetornarErroQuandoBuscarReservaPorRestauranteInexistente() {
+        // Supondo que o id do restaurante seja 999L (inexistente)
+        Long restauranteIdInexistente = 999L;
+
+        // Realizar o GET e verificar o erro
+        given()
+                .when()
+                .get("/reserva/findByRestauranteId?restauranteId={restauranteId}", restauranteIdInexistente)
+                .then()
+                .statusCode(404)  // Verifica que o status retornado é 404 Not Found
+                .body("message[0]", containsString("Restaurante não encontrado"));
+    }
 }

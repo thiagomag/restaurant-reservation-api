@@ -5,6 +5,7 @@ import br.com.postechfiap.restaurantreservationapi.dto.reserva.ReservaRequest;
 import br.com.postechfiap.restaurantreservationapi.dto.reserva.ReservaResponse;
 import br.com.postechfiap.restaurantreservationapi.dto.reserva.gerenciamento.ReservaAtualizarDataHoraRequest;
 import br.com.postechfiap.restaurantreservationapi.interfaces.reserva.AtualizarDataHoraReservaUseCase;
+import br.com.postechfiap.restaurantreservationapi.interfaces.reserva.BuscarReservasPorRestauranteUseCase;
 import br.com.postechfiap.restaurantreservationapi.interfaces.reserva.CancelarReservaUseCase;
 import br.com.postechfiap.restaurantreservationapi.interfaces.reserva.ReservarMesaUseCase;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/reserva")
 @RequiredArgsConstructor
@@ -24,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 public class ReservaController {
 
     private final ReservarMesaUseCase reservarMesaUseCase;
+    private final BuscarReservasPorRestauranteUseCase buscarReservasPorRestauranteUseCase;
     private final CancelarReservaUseCase cancelarReservaUseCase;
     private final AtualizarDataHoraReservaUseCase atualizarDataHoraReservaUseCase;
 
@@ -32,6 +36,13 @@ public class ReservaController {
     public ResponseEntity<ReservaResponse> executarReservas(@RequestBody @Valid ReservaRequest request) {
         ReservaResponse reservaCriada = reservarMesaUseCase.execute(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(reservaCriada);
+    }
+
+    @GetMapping("/findByRestauranteId")
+    @Operation(summary = "Buscar Reserva de Mesas em Restaurante", description = "Busca reservas para um restaurante.")
+    public ResponseEntity<List<ReservaResponse>> buscarReserva(@RequestParam Long restauranteId) {
+        final var reserva = buscarReservasPorRestauranteUseCase.execute(restauranteId);
+        return ResponseEntity.ok(reserva);
     }
 
 

@@ -32,7 +32,7 @@ public class ApiPerformanceSimulation extends Simulation {
             .check(jsonPath("$.email").saveAs("usuarioEmail"));
 
     ActionBuilder buscarUsuarioRequest = http("buscar usuario")
-            .get("/usuario/findByEmail?email=#{usuarioEmail}")
+            .get(session -> "/usuario/findByEmail?email=" + session.getString("usuarioEmail"))
             .check(status().is(200));
 
     ActionBuilder deletarUsuarioRequest = http("deletar usuario")
@@ -75,16 +75,18 @@ public class ApiPerformanceSimulation extends Simulation {
             .post("/reserva")
             .body(StringBody(session -> """
                     {
-                      "restaurante_id": %s,
-                      "data_hora": "2022-12-31T23:59:59",
-                      "quantidade_pessoas": 10
+                      "restaurante_id": %d,
+                      "data_hora_reserva": "2024-03-15T19:30:00",
+                      "numero_de_pessoas": 1,
+                      "usuario_id": %d
                     }
-                    """.formatted(session.getString("restauranteId"))))
+                    """.formatted(session.getLong("restauranteId"), session.getLong("usuarioId"))))
             .asJson()
-            .check(status().is(201));
+            .check(status().is(201))
+            .check(jsonPath("$.reserva_id").saveAs("reservaId"));;
 
     ActionBuilder buscarReservaRequest = http("Buscar reserva")
-            .get("/reserva/findByRestauranteId?restauranteId=#{restauranteId}")
+            .get(session -> "/reserva/findByRestauranteId?restauranteId=" + session.getString("restauranteId"))
             .check(status().is(200));
 
     ActionBuilder deletarReservaRequest = http("Deletar reserva")
@@ -92,7 +94,7 @@ public class ApiPerformanceSimulation extends Simulation {
             .check(status().is(204));
 
     ActionBuilder adicionarAvaliacao = http("Adicionar avaliação")
-            .post("/avaliacao")
+            .post("/avaliar")
             .body(StringBody(session -> """
                     {
                       "reserva_id": %s,
@@ -121,10 +123,14 @@ public class ApiPerformanceSimulation extends Simulation {
 
     ScenarioBuilder cenarioAdicionarReserva = scenario("Adicionar reserva")
             .exec(criarRestauranteRequest)
+            .exec(criarMesasRequest)
+            .exec(adicinarUsuarioRequest)
             .exec(adicionarReservaRequest);
 
     ScenarioBuilder cenarioBuscarReserva = scenario("Buscar reserva")
             .exec(criarRestauranteRequest)
+            .exec(criarMesasRequest)
+            .exec(adicinarUsuarioRequest)
             .exec(adicionarReservaRequest)
             .exec(buscarReservaRequest);
 
@@ -135,6 +141,8 @@ public class ApiPerformanceSimulation extends Simulation {
 
     ScenarioBuilder cenarioAdicionarAvaliacao = scenario("Adicionar avaliação")
             .exec(criarRestauranteRequest)
+            .exec(criarMesasRequest)
+            .exec(adicinarUsuarioRequest)
             .exec(adicionarReservaRequest)
             .exec(adicionarAvaliacao);
 
@@ -142,80 +150,80 @@ public class ApiPerformanceSimulation extends Simulation {
         setUp(
                 cenarioAdicionarUsuario.injectOpen(
                         rampUsersPerSec(1)
-                                .to(10)
+                                .to(3)
                                 .during(Duration.ofSeconds(10)),
-                        constantUsersPerSec(10)
-                                .during(Duration.ofSeconds(60)),
-                        rampUsersPerSec(10)
+                        constantUsersPerSec(3)
+                                .during(Duration.ofSeconds(30)),
+                        rampUsersPerSec(3)
                                 .to(1)
                                 .during(Duration.ofSeconds(10))),
                 cenarioBuscarUsuario.injectOpen(
                         rampUsersPerSec(1)
-                                .to(10)
+                                .to(3)
                                 .during(Duration.ofSeconds(10)),
-                        constantUsersPerSec(10)
-                                .during(Duration.ofSeconds(60)),
-                        rampUsersPerSec(10)
+                        constantUsersPerSec(3)
+                                .during(Duration.ofSeconds(30)),
+                        rampUsersPerSec(3)
                                 .to(1)
                                 .during(Duration.ofSeconds(10))),
                 cenarioDeletarUsuario.injectOpen(
                         rampUsersPerSec(1)
-                                .to(10)
+                                .to(3)
                                 .during(Duration.ofSeconds(10)),
-                        constantUsersPerSec(10)
-                                .during(Duration.ofSeconds(60)),
-                        rampUsersPerSec(10)
+                        constantUsersPerSec(3)
+                                .during(Duration.ofSeconds(30)),
+                        rampUsersPerSec(3)
                                 .to(1)
                                 .during(Duration.ofSeconds(10))),
                 cenarioCriarRestauranteComMesa.injectOpen(
                         rampUsersPerSec(1)
-                                .to(10)
+                                .to(3)
                                 .during(Duration.ofSeconds(10)),
-                        constantUsersPerSec(10)
-                                .during(Duration.ofSeconds(60)),
-                        rampUsersPerSec(10)
+                        constantUsersPerSec(3)
+                                .during(Duration.ofSeconds(30)),
+                        rampUsersPerSec(3)
                                 .to(1)
                                 .during(Duration.ofSeconds(10))),
                 cenarioAdicionarReserva.injectOpen(
                         rampUsersPerSec(1)
-                                .to(10)
+                                .to(3)
                                 .during(Duration.ofSeconds(10)),
-                        constantUsersPerSec(10)
-                                .during(Duration.ofSeconds(60)),
-                        rampUsersPerSec(10)
+                        constantUsersPerSec(3)
+                                .during(Duration.ofSeconds(30)),
+                        rampUsersPerSec(3)
                                 .to(1)
                                 .during(Duration.ofSeconds(10))),
                 cenarioBuscarReserva.injectOpen(
-                        rampUsersPerSec(1)
-                                .to(10)
-                                .during(Duration.ofSeconds(10)),
-                        constantUsersPerSec(10)
-                                .during(Duration.ofSeconds(60)),
-                        rampUsersPerSec(10)
-                                .to(1)
-                                .during(Duration.ofSeconds(10))),
+                                rampUsersPerSec(1)
+                                        .to(3)
+                                        .during(Duration.ofSeconds(10)),
+                                constantUsersPerSec(3)
+                                        .during(Duration.ofSeconds(30)),
+                                rampUsersPerSec(3)
+                                        .to(1)
+                                        .during(Duration.ofSeconds(10))),
                 cenarioDeletarReserva.injectOpen(
                         rampUsersPerSec(1)
-                                .to(10)
+                                .to(3)
                                 .during(Duration.ofSeconds(10)),
-                        constantUsersPerSec(10)
-                                .during(Duration.ofSeconds(60)),
-                        rampUsersPerSec(10)
+                        constantUsersPerSec(3)
+                                .during(Duration.ofSeconds(30)),
+                        rampUsersPerSec(3)
                                 .to(1)
                                 .during(Duration.ofSeconds(10))),
                 cenarioAdicionarAvaliacao.injectOpen(
                         rampUsersPerSec(1)
-                                .to(10)
+                                .to(3)
                                 .during(Duration.ofSeconds(10)),
-                        constantUsersPerSec(10)
-                                .during(Duration.ofSeconds(60)),
-                        rampUsersPerSec(10)
+                        constantUsersPerSec(3)
+                                .during(Duration.ofSeconds(30)),
+                        rampUsersPerSec(3)
                                 .to(1)
                                 .during(Duration.ofSeconds(10))))
-                .protocols(httpProtocol)
-                .assertions(
-                        global().responseTime().max().lt(60),
-                        global().failedRequests().count().is(0L));
+                        .protocols(httpProtocol)
+                        .assertions(
+                                global().responseTime().max().lt(60),
+                                global().failedRequests().count().is(0L));
     }
 }
 

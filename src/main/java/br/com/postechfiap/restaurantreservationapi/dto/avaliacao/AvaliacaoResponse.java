@@ -1,6 +1,7 @@
 package br.com.postechfiap.restaurantreservationapi.dto.avaliacao;
 
 
+import br.com.postechfiap.restaurantreservationapi.entities.Avaliacao;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -38,4 +39,14 @@ public class AvaliacaoResponse {
 
     @Schema(description = "Comentário sobre a experiência", example = "Excelente comida, muito saborosa!")
     private String comentario;
+
+    public static AvaliacaoResponse toDto(Avaliacao avaliacao) {
+        return AvaliacaoResponse.builder()
+                .id(avaliacao.getId())
+                .reservaId(avaliacao.getReserva().getId())
+                .usuarioId(avaliacao.getReserva().getUsuario().getId())
+                .restauranteName(avaliacao.getReserva().getRestaurante().getNome())
+                .nota(avaliacao.getNota().getValor())
+                .build();
+    }
 }

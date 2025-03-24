@@ -5,7 +5,9 @@ import br.com.postechfiap.restaurantreservationapi.dto.reserva.ReservaRequest;
 import br.com.postechfiap.restaurantreservationapi.dto.reserva.ReservaResponse;
 import br.com.postechfiap.restaurantreservationapi.dto.reserva.gerenciamento.ReservaAtualizarDataHoraRequest;
 import br.com.postechfiap.restaurantreservationapi.exception.GlobalExceptionHandler;
+import br.com.postechfiap.restaurantreservationapi.exception.restaurante.RestauranteNotFoundException;
 import br.com.postechfiap.restaurantreservationapi.interfaces.reserva.AtualizarDataHoraReservaUseCase;
+import br.com.postechfiap.restaurantreservationapi.interfaces.reserva.BuscarReservasPorRestauranteUseCase;
 import br.com.postechfiap.restaurantreservationapi.interfaces.reserva.CancelarReservaUseCase;
 import br.com.postechfiap.restaurantreservationapi.interfaces.reserva.ReservarMesaUseCase;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,6 +31,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @Transactional
@@ -47,6 +50,9 @@ class ReservaControllerTest {
 
     @Mock
     private AtualizarDataHoraReservaUseCase atualizarDataHoraReservaUseCase;
+
+    @Mock
+    private BuscarReservasPorRestauranteUseCase buscarReservasPorRestauranteUseCase;
 
     AutoCloseable openMocks;
 
@@ -158,5 +164,34 @@ class ReservaControllerTest {
 
         // Verificar se o caso de uso foi chamado corretamente
         verify(atualizarDataHoraReservaUseCase, times(1)).execute(any(ReservaAtualizarDataHoraRequest.class));
+    }
+
+    @Test
+    void deveBuscarReservasPorRestaurante() throws Exception {
+        // Configurar o comportamento do mock
+        when(buscarReservasPorRestauranteUseCase.execute(1L))
+                .thenReturn(null);
+
+        // Simular a requisição GET
+        mockMvc.perform(get("/reserva/findByRestauranteId?restauranteId={restauranteId}", 1L))
+                .andExpect(status().isOk());
+
+        // Verificar se o caso de uso foi chamado corretamente
+        verify(buscarReservasPorRestauranteUseCase, times(1)).execute(1L);
+    }
+
+    @Test
+    void deveFalharAoBuscarReservasPorRestauranteInexistente() throws Exception {
+        // Configurar o comportamento do mock
+        when(buscarReservasPorRestauranteUseCase.execute(999L))
+                .thenThrow(new RestauranteNotFoundException());
+
+        // Simular a requisição GET
+        mockMvc.perform(get("/reserva/findByRestauranteId?restauranteId={restauranteId}", 999L))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message[0]").value("Restaurante não encontrado."));
+
+        // Verificar se o caso de uso foi chamado corretamente
+        verify(buscarReservasPorRestauranteUseCase, times(1)).execute(999L);
     }
 }

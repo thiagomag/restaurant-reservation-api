@@ -33,7 +33,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.1'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.4'
     implementation 'io.rest-assured:json-schema-validator:5.5.1'
-    implementation 'org.postgresql:postgresql'
+    runtimeOnly 'org.postgresql:postgresql'
     runtimeOnly 'com.h2database:h2' // h2 em runtime
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'

@@ -38,7 +38,13 @@ INSERT INTO reserva_mesa (reserva_id, mesa_id) VALUES
 (2, '002-001'), -- Usuário 2 reservou mesa 002-002 no Restaurante 2
 (3, '003-001'); -- Usuário 3 reservou mesa 003-001 no Restaurante 3
 
+INSERT INTO avaliacao (reserva_id, nota, comentario) VALUES
+(1, 5, 'Excelente atendimento!'),
+(2, 4, 'Comida muito boa!'),
+(3, 3, 'Preço alto.');
+
 ALTER SEQUENCE reserva_id_seq RESTART WITH 4;
 ALTER SEQUENCE restaurante_id_seq RESTART WITH 4;
 ALTER SEQUENCE endereco_id_seq RESTART WITH 4;
 ALTER SEQUENCE usuario_id_seq RESTART WITH 4;
+ALTER SEQUENCE avaliacao_id_seq RESTART WITH 4;
