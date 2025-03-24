@@ -17,7 +17,7 @@ public class BuscarUsuarioPorEmailUseCaseImpl implements BuscarUsuarioPorEmailUs
 
     @Override
     public UsuarioResponse execute(String email) {
-        final var usuario =usuarioRepository.findByEmail(email);
+        final var usuario =usuarioRepository.findByEmailAndDeletedTmspIsNull(email);
         if (usuario.isEmpty()) {
             throw new UsuarioNotFoundException();
         }

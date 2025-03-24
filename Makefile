@@ -11,6 +11,14 @@ integrationTest:
 systemTest:
 	./gradlew clean systemTest
 
+performanceTest:
+	@bash -c ' \
+		trap "$(MAKE) docker-stop" EXIT; \
+		$(MAKE) docker-start; \
+		./gradlew clean performanceTest \
+	'
+
+
 clean:
 	./gradlew clean
 
@@ -20,8 +28,11 @@ build:
 docker-build:
 	docker buildx build \
 		--platform linux/amd64,linux/arm64 \
-		-t $(DOCKER_USERNAME)/$(DOCKER_IMAGE_NAME):latest \
+		-t thiagomag/restaurant-reservation-api:latest \
 		--push .
 
-docker-start:
+docker-start: docker-build
 	docker compose -f docker-compose.yml up -d
+
+docker-stop:
+	docker compose -f docker-compose.yml down

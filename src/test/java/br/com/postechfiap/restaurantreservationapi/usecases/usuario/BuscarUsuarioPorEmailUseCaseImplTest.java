@@ -44,7 +44,7 @@ public class BuscarUsuarioPorEmailUseCaseImplTest {
         final var usuario = UsuarioTestUtils.buildUsuario();
         final var usuarioResponse = UsuarioTestUtils.buildUsuarioResponse();
 
-        when(usuarioRepository.findByEmail(email))
+        when(usuarioRepository.findByEmailAndDeletedTmspIsNull(email))
                 .thenReturn(Optional.of(usuario));
         when(usuarioResponseAdapter.adapt(usuario))
                 .thenReturn(usuarioResponse);
@@ -64,7 +64,7 @@ public class BuscarUsuarioPorEmailUseCaseImplTest {
         //given
         final var email = "email";
 
-        when(usuarioRepository.findByEmail(email))
+        when(usuarioRepository.findByEmailAndDeletedTmspIsNull(email))
                 .thenReturn(Optional.empty());
 
         //when

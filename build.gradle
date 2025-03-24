@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.4.2'
     id 'io.spring.dependency-management' version '1.1.7'
+    id 'io.gatling.gradle' version '3.13.5.1'
 }
 
 group = 'br.com.postechfiap'
@@ -32,7 +33,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.1'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.4'
     implementation 'io.rest-assured:json-schema-validator:5.5.1'
-    runtimeOnly 'org.postgresql:postgresql'
+    implementation 'org.postgresql:postgresql'
     runtimeOnly 'com.h2database:h2' // h2 em runtime
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -46,6 +47,8 @@ dependencies {
     testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.21.1'
     testImplementation 'org.junit.platform:junit-platform-suite-api:1.12.1'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.3'
+    implementation 'io.gatling:gatling-app:3.13.5'
+    implementation 'io.gatling.highcharts:gatling-charts-highcharts:3.13.5'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
@@ -89,5 +92,22 @@ tasks.register('systemTest', Test) {
         events "passed", "skipped", "failed"
         exceptionFormat = "full"
         showStandardStreams = true
+    }
+}
+
+tasks.register('performanceTest', GradleBuild) {
+    description = 'Executa os testes de performance com Gatling'
+    group = 'verification'
+
+    tasks = ['gatlingRun']
+
+    doFirst {
+        println 'Iniciando testes de performance com Gatling...'
+    }
+
+    doLast {
+        println 'Testes de performance concluídos.'
+        def reportDir = file("$buildDir/reports/gatling")
+        println "Verifique o relatório em: ${reportDir}"
     }
 }

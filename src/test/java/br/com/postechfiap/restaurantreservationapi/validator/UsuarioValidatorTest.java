@@ -35,7 +35,7 @@ class UsuarioValidatorTest {
         Long usuarioId = 1L;
 
 
-        when(usuarioRepository.findById(usuarioId)).thenReturn(Optional.empty());
+        when(usuarioRepository.findByIdAndDeletedTmspIsNull(usuarioId)).thenReturn(Optional.empty());
 
         // Act & Assert
         assertThatThrownBy(() -> usuarioValidator.validateUsuarioExists(usuarioId))
@@ -50,7 +50,7 @@ class UsuarioValidatorTest {
         Usuario usuario = new Usuario();
         usuario.setId(usuarioId);
 
-        when(usuarioRepository.findById(usuarioId)).thenReturn(Optional.of(usuario));
+        when(usuarioRepository.findByIdAndDeletedTmspIsNull(usuarioId)).thenReturn(Optional.of(usuario));
 
         // Act
         Usuario resultado = usuarioValidator.validateUsuarioExists(usuarioId);

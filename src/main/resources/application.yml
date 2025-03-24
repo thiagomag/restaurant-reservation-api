@@ -9,6 +9,7 @@ spring:
     jpa:
       show-sql: true
       hibernate:
+        generate-ddl: true
         ddl-auto: update
 
     properties:
