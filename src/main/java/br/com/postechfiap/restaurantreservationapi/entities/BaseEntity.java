@@ -28,10 +28,6 @@ public abstract class BaseEntity<ID> implements Entity<ID> {
     @JsonIgnore
     protected LocalDateTime deletedTmsp;
 
-    @Version
-    @JsonIgnore
-    protected Integer version;
-
     public void delete() {
         setDeletedTmsp(LocalDateTime.now());
     }
