@@ -16,8 +16,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
 
 
 @ActiveProfiles("test")
@@ -39,9 +38,6 @@ class AvaliacaoControllerIT {
     public void setup() {
         RestAssured.port = port;
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
-
-
-
     }
 
 
@@ -49,7 +45,7 @@ class AvaliacaoControllerIT {
     void deveCriarAvaliacaoComSucesso() {
         // Criar um objeto de request (AvaliacaoRequest)
         AvaliacaoRequest avaliacaoRequest = new AvaliacaoRequest();
-        avaliacaoRequest.setReservaId(1L);
+        avaliacaoRequest.setReservaId(3L);
         avaliacaoRequest.setNota(5);
         avaliacaoRequest.setComentario("Ótima reserva!");
 
@@ -61,7 +57,7 @@ class AvaliacaoControllerIT {
                 .post("/avaliar")
                 .then()
                 .statusCode(201)  // Verifica que o status retornado é 201 Created
-                .body("reserva_id", equalTo(1))
+                .body("reserva_id", equalTo(3))
                 .body("nota", equalTo(5))
                 .body("comentario", equalTo("Ótima reserva!"));
     }
@@ -83,5 +79,49 @@ class AvaliacaoControllerIT {
                 .then()
                 .statusCode(400)  // Verifica que o status retornado é 400 Bad Request
                 .body("message[0]", containsString("A nota deve ser no mínimo 1."));  // Ajustar a mensagem para refletir o erro real
+    }
+
+    @Test
+    void deveRetornarAvaliacoesPorUsuario() {
+        // Realizar o GET e verificar a resposta
+        given()
+                .when()
+                .get("/avaliar/findByUsuario?usuarioId=2")
+                .then()
+                .statusCode(200)
+                .body("size()", greaterThan(0));
+    }
+
+    @Test
+    void deveRetornarErroAoBuscarAvaliacoesPorUsuarioInexistente() {
+        // Realizar o GET e verificar a resposta
+        given()
+                .when()
+                .get("/avaliar/findByUsuario?usuarioId=999")
+                .then()
+                .statusCode(404)
+                .body("message[0]", containsString("Usuário não encontrado."));
+    }
+
+    @Test
+    void deveRetornarAvaliacaoPorRestaurante() {
+        // Realizar o GET e verificar a resposta
+        given()
+                .when()
+                .get("/avaliar/findByRestaurante?restauranteId=2")
+                .then()
+                .statusCode(200)
+                .body("size()", greaterThan(0));
+    }
+
+    @Test
+    void deveRetornarErroAoBuscarAvaliacoesPorRestauranteInexistente() {
+        // Realizar o GET e verificar a resposta
+        given()
+                .when()
+                .get("/avaliar/findByRestaurante?restauranteId=999")
+                .then()
+                .statusCode(404)
+                .body("message[0]", containsString("Restaurante não encontrado."));
     }
 }

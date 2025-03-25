@@ -36,7 +36,7 @@ public class AvaliacaoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(avaliacaoCriada);
     }
 
-    @GetMapping("/findByUsuarioId")
+    @GetMapping("/findByUsuario")
     @Operation(summary = "Listar Avaliações por Usuario", description = "Lista todas as avaliações por usuario.")
     public ResponseEntity<List<AvaliacaoResponse>> listarAvaliacoesPorUsuario(@RequestParam Long usuarioId) {
         final var avaliacoes = listarAvaliacoesPorUsuarioUseCase.execute(usuarioId);

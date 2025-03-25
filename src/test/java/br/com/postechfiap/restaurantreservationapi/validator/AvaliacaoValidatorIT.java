@@ -1,8 +1,5 @@
 package br.com.postechfiap.restaurantreservationapi.validator;
 
-import br.com.postechfiap.restaurantreservationapi.entities.Avaliacao;
-import br.com.postechfiap.restaurantreservationapi.entities.Reserva;
-import br.com.postechfiap.restaurantreservationapi.enuns.NotaEnum;
 import br.com.postechfiap.restaurantreservationapi.exception.reserva.ReservaJaAvaliadaException;
 import br.com.postechfiap.restaurantreservationapi.interfaces.avaliacao.AvaliacaoRepository;
 import br.com.postechfiap.restaurantreservationapi.interfaces.reserva.ReservaRepository;
@@ -65,18 +62,12 @@ public class AvaliacaoValidatorIT {
     @DisplayName("validarSeReservaJaFoiAvaliada - Reserva não foi avaliada")
     public void deveAceitarReservaNaoAvaliada() {
         // Act & Assert
-        assertDoesNotThrow(() -> avaliacaoValidator.validarSeReservaJaFoiAvaliada(1L));
+        assertDoesNotThrow(() -> avaliacaoValidator.validarSeReservaJaFoiAvaliada(3L));
     }
 
     @Test
     @DisplayName("validarSeReservaJaFoiAvaliada - Reserva já foi avaliada")
     public void deveLancarExcecaoQuandoReservaJaFoiAvaliada() {
-        // Arranjo: Criar uma avaliação para a reserva
-        Reserva reserva = reservaRepository.findById(1L).orElseThrow();
-
-        Avaliacao avaliacao = new Avaliacao(reserva, NotaEnum.EXCELENTE,"Ótimo restaurante");
-
-        avaliacaoRepository.save(avaliacao);
 
         // Act & Assert
         assertThatThrownBy(() -> avaliacaoValidator.validarSeReservaJaFoiAvaliada(1L))
