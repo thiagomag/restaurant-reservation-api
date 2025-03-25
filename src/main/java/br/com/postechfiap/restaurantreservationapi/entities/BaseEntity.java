@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.annotation.Version;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
@@ -26,6 +27,10 @@ public abstract class BaseEntity<ID> implements Entity<ID> {
     protected LocalDateTime updatedAt;
     @JsonIgnore
     protected LocalDateTime deletedTmsp;
+
+    @Version
+    @JsonIgnore
+    protected Integer version;
 
     public void delete() {
         setDeletedTmsp(LocalDateTime.now());
