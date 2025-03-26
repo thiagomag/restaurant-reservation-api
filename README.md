@@ -31,7 +31,7 @@ A **Restaurant Reservation API** oferece uma solução robusta para o gerenciame
 
 - **Java 17**
 - **Spring Boot 3**
-- **Spring WebFlux (R2DBC)**
+- **Spring Web**
 - **PostgreSQL**
 - **Docker e Docker Compose**
 - **Gradle**
